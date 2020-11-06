@@ -91,32 +91,32 @@ public class Application {
 			si2.setMarketCap(2.0);
 			stockInfoRepo.save(si2);
 
-			sp1 = new StockPrice();
-			sp1.setTicker("GOOG");
-			sp1.setDate(formatter.parse("2020-11-05"));
-			sp1.setOpen(1147.95);
-			sp1.setHigh(1219.62);
-			sp1.setLow(1136.87);
-			sp1.setClose(1419.03);
-			stockPriceRepo.save(sp1);
+      StockPrice sp4 = new StockPrice();
+      sp4.setTicker("GOOG");
+      sp4.setDate(formatter.parse("2020-11-05"));
+      sp4.setOpen(1147.95);
+      sp4.setHigh(1219.62);
+      sp4.setLow(1136.87);
+      sp4.setClose(1419.03);
+			stockPriceRepo.save(sp4);
 
-			sp2 = new StockPrice();
-			sp2.setTicker("GOOG");
-			sp2.setDate(formatter.parse("2020-11-04"));
-			sp2.setOpen(1114.14);
-			sp2.setHigh(1215.59);
-			sp2.setLow(1142.35);
-			sp2.setClose(1414.95);
-			stockPriceRepo.save(sp2);
+      StockPrice sp5 = new StockPrice();
+      sp5.setTicker("GOOG");
+      sp5.setDate(formatter.parse("2020-11-04"));
+      sp5.setOpen(1114.14);
+      sp5.setHigh(1215.59);
+      sp5.setLow(1142.35);
+      sp5.setClose(1414.95);
+			stockPriceRepo.save(sp5);
 
-			sp3 = new StockPrice();
-			sp3.setTicker("GOOG");
-			sp3.setDate(formatter.parse("2020-11-03"));
-			sp3.setOpen(1019.66);
-			sp3.setHigh(1111.49);
-			sp3.setLow(1018.73);
-			sp3.setClose(1110.44);
-			stockPriceRepo.save(sp3);
+      StockPrice sp6 = new StockPrice();
+      sp6.setTicker("GOOG");
+      sp6.setDate(formatter.parse("2020-11-03"));
+      sp6.setOpen(1019.66);
+      sp6.setHigh(1111.49);
+      sp6.setLow(1018.73);
+      sp6.setClose(1110.44);
+			stockPriceRepo.save(sp6);
 
 			//MSFT
 			StockInfo si3 = new StockInfo();
@@ -125,32 +125,32 @@ public class Application {
 			si3.setMarketCap(2.0);
 			stockInfoRepo.save(si3);
 
-			sp1 = new StockPrice();
-			sp1.setTicker("MSFT");
-			sp1.setDate(formatter.parse("2020-11-05"));
-			sp1.setOpen(11147.95);
-			sp1.setHigh(12129.62);
-			sp1.setLow(11336.87);
-			sp1.setClose(14419.03);
-			stockPriceRepo.save(sp1);
+      StockPrice sp7 = new StockPrice();
+      sp7.setTicker("MSFT");
+      sp7.setDate(formatter.parse("2020-11-05"));
+      sp7.setOpen(11147.95);
+      sp7.setHigh(12129.62);
+      sp7.setLow(11336.87);
+      sp7.setClose(14419.03);
+			stockPriceRepo.save(sp7);
 
-			sp2 = new StockPrice();
-			sp2.setTicker("MSFT");
-			sp2.setDate(formatter.parse("2020-11-04"));
-			sp2.setOpen(11154.14);
-			sp2.setHigh(12615.59);
-			sp2.setLow(17142.35);
-			sp2.setClose(14184.95);
-			stockPriceRepo.save(sp2);
+      StockPrice sp8 = new StockPrice();
+      sp8.setTicker("MSFT");
+      sp8.setDate(formatter.parse("2020-11-04"));
+      sp8.setOpen(11154.14);
+      sp8.setHigh(12615.59);
+      sp8.setLow(17142.35);
+      sp8.setClose(14184.95);
+			stockPriceRepo.save(sp8);
 
-			sp3 = new StockPrice();
-			sp3.setTicker("MSFT");
-			sp3.setDate(formatter.parse("2020-11-03"));
-			sp3.setOpen(10199.66);
-			sp3.setHigh(11111.49);
-			sp3.setLow(10128.73);
-			sp3.setClose(13110.44);
-			stockPriceRepo.save(sp3);
+      StockPrice sp9 = new StockPrice();
+      sp9.setTicker("MSFT");
+      sp9.setDate(formatter.parse("2020-11-03"));
+      sp9.setOpen(10199.66);
+      sp9.setHigh(11111.49);
+      sp9.setLow(10128.73);
+      sp9.setClose(13110.44);
+			stockPriceRepo.save(sp9);
 
 
 

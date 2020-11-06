@@ -18,6 +18,9 @@ export class StockService {
   private stockPriceSubject = new BehaviorSubject<StockPrice[]>([])
   public stockPrice$: Observable<StockPrice[]> = this.stockPriceSubject.asObservable();
 
+  private dateSearchSubject = new BehaviorSubject<StockPrice[]>(null);
+  public dateSearch$: Observable<StockPrice[]> = this.dateSearchSubject.asObservable();
+
   private stockGroupId;
 
   constructor(
@@ -119,6 +122,34 @@ export class StockService {
       () => {
         this.stocksSubject.next(null);
         this.getStockGroup();
+      }
+    );
+  }
+
+  updateName(ticker: string, name: string) {
+    console.log('updateName: ticker=%s, name=%s', ticker, name);
+
+    const url = `http://localhost:8080/updateCorporateName/${ticker}?name=${name}`;
+
+    return this.http.get<any>(url).subscribe(
+      () => {
+        this.stocksSubject.next(null);
+        this.getStockGroup();
+      }
+    );
+  }
+
+  searchDate(date: string) {
+    const url = `http://localhost:8080/stockprice-date/${date}`;
+
+    return this.http.get<any>(url).subscribe(
+      (data) => {
+        const arr: StockPrice[] = [];
+        for (const stock of data) {
+          arr.push(new StockPrice(stock));
+        }
+        console.log(arr);
+        this.dateSearchSubject.next(arr);
       }
     );
   }

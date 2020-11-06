@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit{
   public currentStockId = 1;
 
   addStockFormGroup: FormGroup;
+  dateSearchFormGroup: FormGroup;
 
   constructor(
     private demoService: DemoService,
@@ -37,7 +38,11 @@ export class DashboardComponent implements OnInit{
     this.stockService.getStockGroup();
 
     this.addStockFormGroup = this.formBuilder.group({
-      tickerCtrl: ['', Validators.required]
+      tickerCtrl: ['', Validators.required],
+      nameCtrl: ['', Validators.required]
+    });
+    this.dateSearchFormGroup = this.formBuilder.group({
+      dateCtrl: ['', Validators.required]
     });
 
     this.chartColor = "#FFFFFF";
@@ -245,6 +250,17 @@ export class DashboardComponent implements OnInit{
   addStock() {
     console.log(this.addStockFormGroup.value.tickerCtrl);
     this.stockService.addStock(this.addStockFormGroup.value.tickerCtrl);
+  }
+
+  updateName() {
+    const ticker = this.addStockFormGroup.value.tickerCtrl;
+    const newName = this.addStockFormGroup.value.nameCtrl;
+    this.stockService.updateName(ticker, newName);
+  }
+
+  searchDate() {
+    const date = this.dateSearchFormGroup.value.dateCtrl;
+    this.stockService.searchDate(date);
   }
 
   selectStock($event) {

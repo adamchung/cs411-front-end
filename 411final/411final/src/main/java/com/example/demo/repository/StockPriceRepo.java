@@ -15,5 +15,5 @@ public interface StockPriceRepo extends JpaRepository<StockPrice, Long> {
                     "WHERE sp.ticker = :ticker",
             nativeQuery = true)
     List<StockPrice> findByTicker(String ticker);
-    List<StockPrice> findByTickerAndDate(String ticker, Date tradeDate);
+    List<StockPrice> findByDate(Date tradeDate);
 }

@@ -13,6 +13,8 @@ import yahoofinance.histquotes.HistoricalQuote;
 import yahoofinance.histquotes.Interval;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
@@ -143,6 +145,25 @@ public class GeneralController {
         return ret;
     }
 
+    @RequestMapping("/stockprice-date/{date}")
+    @ResponseBody
+    public List<StockPrice> stockPriceByDate(@PathVariable("date") String date) throws IOException {
+      log.info("stock by date");
+      log.info(date);
+      if (date == null || date == "") {
+        log.info("returning all stocks");
+        return stockPriceRepo.findAll();
+      }
+      SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+      List<StockPrice> ret;
+      try {
+        ret = stockPriceRepo.findByDate(formatter.parse(date));
+      } catch (ParseException e){
+        ret = stockPriceRepo.findAll();
+      }
+      return ret;
+    }
+
     @PutMapping("/stockprice/{id}")
     StockPrice replaceStockPrice(@RequestBody StockPrice newStockPrice, @PathVariable Long id) {
         return stockPriceRepo.findById(id)
@@ -224,6 +245,30 @@ public class GeneralController {
       log.info("stock group updated");
     }
   }
+
+  @GetMapping("/updateCorporateName/{ticker}")
+  void updateCorporateName(@PathVariable String ticker, @RequestParam String name) {
+    log.info("update corporate name");
+
+    StockInfo si = stockInfoRepo.findByTicker(ticker);
+    if(si != null){
+      si.setCorporateName(name);
+      stockInfoRepo.save(si);
+      log.info("updated name");
+    }
+  }
+
+//  @GetMapping("/queryDate/{date}")
+//  void updateCorporateName(@PathVariable String date) {
+//    log.info("update corporate name");
+//
+//    StockInfo si = stockInfoRepo.findByTicker(ticker);
+//    if(si != null){
+//      si.setCorporateName(name);
+//      stockInfoRepo.save(si);
+//      log.info("updated name");
+//    }
+//  }
 
 
     /**

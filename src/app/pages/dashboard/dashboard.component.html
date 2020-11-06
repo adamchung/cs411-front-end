@@ -36,8 +36,50 @@
               <mat-option value="MSFT">MSFT</mat-option>
             </mat-select>
           </mat-form-field>
+          <br>
+          <mat-form-field>
+            <mat-label>New Name</mat-label>
+            <textarea matInput formControlName="nameCtrl"></textarea>
+          </mat-form-field>
         </form>
         <button class="btn btn-outline-primary" (click)="addStock()">Add Stock</button>
+        <button class="btn btn-outline-primary" (click)="updateName()">Update Name</button>
+        <br>
+        <form [formGroup]="dateSearchFormGroup">
+          <mat-form-field appearance="fill">
+            <mat-label>Date</mat-label>
+            <textarea matInput formControlName="dateCtrl"></textarea>
+          </mat-form-field>
+        </form>
+        <button class="btn btn-outline-primary" (click)="searchDate()">Search</button>
+        <br>
+        <br>
+        <ng-container *ngIf="stockService.dateSearch$ | async as stocks">
+          <h5>Search Result:</h5>
+          <table class="table">
+            <thead class="text-primary">
+            <th>Ticker</th>
+            <th>Date</th>
+            <th>High</th>
+            <th>Low</th>
+            <th>Open</th>
+            <th>lose</th>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let stock of stocks">
+                <tr>
+                  <td>{{stock.ticker}}</td>
+                  <td>{{stock.date | date: "fullDate"}}</td>
+                  <td>{{stock.high}}</td>
+                  <td>{{stock.low}}</td>
+                  <td>{{stock.open}}</td>
+                  <td>{{stock.close}}</td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </ng-container>
+        <br>
         <br>
         <div class="table-responsive">
           <table class="table">
