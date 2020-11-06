@@ -30,6 +30,9 @@ export class DashboardComponent implements OnInit{
   }
 
   ngOnInit(){
+    this.stockService.getStockGroup();
+
+
     this.chartColor = "#FFFFFF";
 
     this.canvas = document.getElementById("chartHours");
@@ -226,6 +229,11 @@ export class DashboardComponent implements OnInit{
 
   getStockInfo() {
     return this.stockService.stocks$;
+  }
+
+  remove(ticker: string) {
+    console.log('Removing %s', ticker);
+    this.stockService.removeStockGroup(ticker);
   }
 
   selectStock($event) {

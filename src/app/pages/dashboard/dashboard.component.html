@@ -46,16 +46,18 @@
             </thead>
             <tbody>
             <ng-container *ngFor="let info of getStockInfo() | async">
-              <ng-container *ngIf="stockService.getPrice(info.id) as price">
+              <ng-container *ngIf="stockService.getPrice(info.ticker) as price">
                 <tr>
                   <td>{{info.corporateName}}</td>
                   <td>{{info.ticker}}</td>
-                  <td>{{price.volume}}</td>
+                  <td>{{price.volume ? price.volume : 'N/A'}}</td>
                   <td>{{price.high}}</td>
                   <td>{{price.low}}</td>
-                  <td>{{price.open}}</td>s
+                  <td>{{price.open}}</td>
                   <td>{{price.close}}</td>
-                  <td>{{price.volume * price.close}}</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-primary" (click)="remove(info.ticker)">Remove</button>
+                  </td>
                 </tr>
               </ng-container>
             </ng-container>

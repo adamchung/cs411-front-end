@@ -13,10 +13,7 @@ import yahoofinance.histquotes.HistoricalQuote;
 import yahoofinance.histquotes.Interval;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 public class GeneralController {
@@ -169,6 +166,24 @@ public class GeneralController {
         stockPriceRepo.deleteById(id);
     }
 
+  @DeleteMapping("/stock")
+  void deleteStockInfo(@RequestParam Long id, @RequestParam String ticker) {
+    Optional<StockGroup> osg = stockGroupRepo.findById(id);
+    if(osg.isPresent()){
+      StockGroup sg = osg.get();
+      List<StockInfo> l = sg.getOpenStockInfos();
+      for (StockInfo s : l) {
+        String t = s.getTicker();
+        if (t.equals(ticker)){
+          l.remove(s);
+          sg.setOpenStockInfos(l);
+          stockGroupRepo.delete(sg);
+          stockGroupRepo.save(sg);
+          break;
+        }
+      }
+    }
+  }
 
     /**
      *
