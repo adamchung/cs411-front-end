@@ -1,0 +1,25 @@
+
+<div class="sidebar-wrapper">
+  <div class="logo">
+<!--    <a href="http://www.creative-tim.com" class="simple-text logo-mini">-->
+<!--      <div class="logo-image-small">-->
+<!--        <img src="assets/img/angular2-logo.png">-->
+<!--      </div>-->
+<!--    </a>-->
+    <a class="simple-text logo-normal">Danny's Magical Stock</a>
+  </div>
+    <ul class="nav">
+        <li *ngFor="let menuItem of menuItems" routerLinkActive="active" class="{{menuItem.class}}">
+            <a [routerLink]="[menuItem.path]">
+                <i class="nc-icon {{menuItem.icon}}"></i>
+                <p>{{menuItem.title}}</p>
+            </a>
+        </li>
+      <li>
+        <a href="https://wiki.illinois.edu/wiki/display/CS411AAFA20/Daniel%27s+Squad">
+          <i class="nc-icon nc-alert-circle-i"></i>
+          <p>Group 96 Page</p>
+        </a>
+      </li>
+    </ul>
+</div>
