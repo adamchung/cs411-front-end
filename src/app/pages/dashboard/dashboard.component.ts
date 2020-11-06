@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit{
   public chartEmail;
   public chartHours;
 
-  portfolioHeader = ['Name', 'Ticker', 'Quantity', 'Volume', 'High', 'Low', 'Open', 'Close', 'Total'];
+  portfolioHeader = ['Name', 'Ticker', 'Volume', 'High', 'Low', 'Open', 'Close'];
 
   public currentStockId = 1;
 

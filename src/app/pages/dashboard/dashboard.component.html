@@ -27,12 +27,22 @@
       <div class="card-body">
         <h2>My Portfolio</h2>
         <br>
-        <input type="text">
-        <button class="btn btn-outline-primary">Reeetard</button>
+        <mat-form-field appearance="fill">
+          <mat-label>Stocks</mat-label>
+          <mat-select>
+            <mat-option value="AAPL">AAPL</mat-option>
+            <mat-option value="GOOG">GOOG</mat-option>
+            <mat-option value="MSFT">MSFT</mat-option>
+            <mat-option value="FB">FB</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button class="btn btn-outline-primary">Add Stock</button>
+        <br>
         <div class="table-responsive">
           <table class="table">
             <thead class="text-primary">
               <th *ngFor="let header of portfolioHeader">{{header}}</th>
+              <th></th>
             </thead>
             <tbody>
             <ng-container *ngFor="let info of getStockInfo() | async">
@@ -41,10 +51,9 @@
                   <td>{{info.corporateName}}</td>
                   <td>{{info.ticker}}</td>
                   <td>{{price.volume}}</td>
-                  <td>{{price.volume}}</td>
                   <td>{{price.high}}</td>
                   <td>{{price.low}}</td>
-                  <td>{{price.open}}</td>
+                  <td>{{price.open}}</td>s
                   <td>{{price.close}}</td>
                   <td>{{price.volume * price.close}}</td>
                 </tr>
