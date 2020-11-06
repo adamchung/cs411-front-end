@@ -4,7 +4,8 @@ import {Futurama} from '../models/futurama';
 import {StockInfo} from '../models/stock-info';
 import {StockPrice} from '../models/stock-price';
 import {sample} from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {tick} from '@angular/core/testing';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,8 @@ export class StockService {
 
   private stockPriceSubject = new BehaviorSubject<StockPrice[]>([])
   public stockPrice$: Observable<StockPrice[]> = this.stockPriceSubject.asObservable();
+
+  private stockGroupId;
 
   constructor(
     private http: HttpClient,
@@ -64,6 +67,8 @@ export class StockService {
 
     return this.http.get<any>(url).subscribe(
       (data) => {
+        console.log('Setting group id to %d', data[0].id);
+        this.stockGroupId = data[0].id;
         this.stocksSubject.next(data[0].openStockInfos);
         console.log(this.stocksSubject.getValue());
 
@@ -95,8 +100,28 @@ export class StockService {
   }
 
   removeStockGroup(ticker: string) {
-    const url = ``
+    const url = `http://localhost:8080/deleteStock?id=${this.stockGroupId}&ticker=${ticker}`
+    console.log('Removing %s', ticker);
+    console.log(url);
+
+    return this.http.get<any>(url).subscribe(
+      (data) => {
+        this.stocksSubject.next(null);
+        this.getStockGroup();
+      }
+    );
   };
+
+  addStock(ticker: string) {
+    const url = `http://localhost:8080/addToStockGroup/${this.stockGroupId}?ticker=${ticker}`;
+
+    return this.http.get<any>(url).subscribe(
+      () => {
+        this.stocksSubject.next(null);
+        this.getStockGroup();
+      }
+    );
+  }
 
   getInfo(id: number) {
     const subject = this.stocksSubject.getValue();

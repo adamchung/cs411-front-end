@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface StockInfoRepo extends JpaRepository<StockInfo, Long> {
-    List<StockInfo> findByTicker(String ticker);
+    StockInfo findByTicker(String ticker);
 }

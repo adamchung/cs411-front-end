@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js';
 import {DemoService} from '../../shared/services/demo.service';
 import {StockService} from '../../shared/services/stock.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 
 @Component({
@@ -22,9 +23,12 @@ export class DashboardComponent implements OnInit{
 
   public currentStockId = 1;
 
+  addStockFormGroup: FormGroup;
+
   constructor(
     private demoService: DemoService,
     private stockService: StockService,
+    private formBuilder: FormBuilder,
     ) {
       this.demoService.getFuturama();
   }
@@ -32,6 +36,9 @@ export class DashboardComponent implements OnInit{
   ngOnInit(){
     this.stockService.getStockGroup();
 
+    this.addStockFormGroup = this.formBuilder.group({
+      tickerCtrl: ['', Validators.required]
+    });
 
     this.chartColor = "#FFFFFF";
 
@@ -232,8 +239,12 @@ export class DashboardComponent implements OnInit{
   }
 
   remove(ticker: string) {
-    console.log('Removing %s', ticker);
     this.stockService.removeStockGroup(ticker);
+  }
+
+  addStock() {
+    console.log(this.addStockFormGroup.value.tickerCtrl);
+    this.stockService.addStock(this.addStockFormGroup.value.tickerCtrl);
   }
 
   selectStock($event) {

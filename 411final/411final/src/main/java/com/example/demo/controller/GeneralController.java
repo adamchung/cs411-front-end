@@ -166,7 +166,7 @@ public class GeneralController {
         stockPriceRepo.deleteById(id);
     }
 
-  @DeleteMapping("/stock")
+  @GetMapping("/deleteStock")
   void deleteStockInfo(@RequestParam Long id, @RequestParam String ticker) {
     Optional<StockGroup> osg = stockGroupRepo.findById(id);
     if(osg.isPresent()){
@@ -208,6 +208,22 @@ public class GeneralController {
     void deleteStockGroup(@PathVariable Long id) {
         stockGroupRepo.deleteById(id);
     }
+
+
+  @GetMapping("/addToStockGroup/{id}")
+  void addStockInfoToStockGroup(@PathVariable Long id, @RequestParam String ticker) {
+    log.info("add stock info to stock group");
+
+    StockInfo si = stockInfoRepo.findByTicker(ticker);
+    Optional<StockGroup> sg = stockGroupRepo.findById(id);
+    if(si != null && sg.isPresent()){
+      List<StockInfo> l = sg.get().getOpenStockInfos();
+      l.add(si);
+      sg.get().setOpenStockInfos(l);
+      stockGroupRepo.save(sg.get());
+      log.info("stock group updated");
+    }
+  }
 
 
     /**

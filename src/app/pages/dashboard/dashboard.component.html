@@ -27,16 +27,17 @@
       <div class="card-body">
         <h2>My Portfolio</h2>
         <br>
-        <mat-form-field appearance="fill">
-          <mat-label>Stocks</mat-label>
-          <mat-select>
-            <mat-option value="AAPL">AAPL</mat-option>
-            <mat-option value="GOOG">GOOG</mat-option>
-            <mat-option value="MSFT">MSFT</mat-option>
-            <mat-option value="FB">FB</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <button class="btn btn-outline-primary">Add Stock</button>
+        <form [formGroup]="addStockFormGroup">
+          <mat-form-field appearance="fill">
+            <mat-label>Stocks</mat-label>
+            <mat-select formControlName="tickerCtrl">
+              <mat-option value="AAPL">AAPL</mat-option>
+              <mat-option value="GOOG">GOOG</mat-option>
+              <mat-option value="MSFT">MSFT</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </form>
+        <button class="btn btn-outline-primary" (click)="addStock()">Add Stock</button>
         <br>
         <div class="table-responsive">
           <table class="table">
