@@ -1,188 +1,80 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {Futurama} from '../models/futurama';
-import {StockInfo} from '../models/stock-info';
-import {StockPrice} from '../models/stock-price';
-import {sample} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {tick} from '@angular/core/testing';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {Portfolio} from '../models/portfolio';
+import {StockInfo} from '../models/stock-info';
+import {PortfolioService} from './portfolio.service';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StockService {
 
-  private stocksSubject = new BehaviorSubject<StockInfo[]>(null)
-  public stocks$: Observable<StockInfo[]> = this.stocksSubject.asObservable();
+  private stockInfoSubject = new BehaviorSubject<StockInfo>(null);
+  public stockInfo: Observable<StockInfo> = this.stockInfoSubject.asObservable();
 
-  private stockPriceSubject = new BehaviorSubject<StockPrice[]>([])
-  public stockPrice$: Observable<StockPrice[]> = this.stockPriceSubject.asObservable();
-
-  private dateSearchSubject = new BehaviorSubject<StockPrice[]>(null);
-  public dateSearch$: Observable<StockPrice[]> = this.dateSearchSubject.asObservable();
-
-  private stockGroupId;
+  private tickersSubject = new BehaviorSubject<string[]>(null);
+  public tickers$: Observable<string[]> = this.tickersSubject.asObservable();
 
   constructor(
     private http: HttpClient,
-  ) {
-    // test data
-    // const sampleStock = [{
-    //   id: 0,
-    //   ticker: 'AAPL',
-    //   marketCap: '1.8T',
-    //   corporateName: 'Apple',
-    // }, {
-    //   id: 1,
-    //   ticker: 'GOOG',
-    //   marketCap: '1.6T',
-    //   corporateName: 'Alphabet',
-    // }];
-    //
-    // this.stocksSubject.next(sampleStock);
-    //
-    // const samplePrice = [new StockPrice({
-    //   id: 0,
-    //   ticker: 'AAPL',
-    //   volume: '100',
-    //   low: '90',
-    //   high: '110',
-    //   open: '102',
-    //   close: '98',
-    //   date: '2020-01-15T06:03:00.000+00:00'
-    // }), new StockPrice({
-    //   id: 1,
-    //   ticker: 'GOOG',
-    //   volume: '100',
-    //   low: '90',
-    //   high: '110',
-    //   open: '102',
-    //   close: '98',
-    //   date: '2020-02-16T06:03:00.000+00:00'
-    // })];
+    private portfolioService: PortfolioService,
+  ) {}
 
-    // this.stockPriceSubject.next(samplePrice);
+  getStockInfo() {
+    const current = this.portfolioService.currentTicker;
+    if (!current) {
+      console.log('No current ticker!');
+      this.stockInfoSubject.next(null);
+      return;
+    }
 
-  }
+    if (this.stockInfoSubject.getValue() !== null
+      && this.stockInfoSubject.getValue().ticker === current) {
+      console.log('Data already loaded');
+      return;
+    }
 
-  getStockGroup() {
-    const url = 'http://localhost:8080/stockGroup';
+    this.stockInfoSubject.next(null);
 
-    return this.http.get<any>(url).subscribe(
+    const url = `${environment.apiUrl}/stocks/${current}`;
+
+    this.http.get<StockInfo>(url).subscribe(
       (data) => {
-        console.log('Setting group id to %d', data[0].id);
-        this.stockGroupId = data[0].id;
-        this.stocksSubject.next(data[0].openStockInfos);
-        console.log(this.stocksSubject.getValue());
-
-        for (const stock of this.stocksSubject.getValue()) {
-          this.getStockPrice(stock.ticker);
+        if (data) {
+          this.stockInfoSubject.next(new StockInfo(data));
+          console.log(this.stockInfoSubject.getValue());
         }
       }
     );
   }
 
-  getStockPrice(ticker: string) {
-    console.log('getStockprice');
-    for (const price of this.stockPriceSubject.getValue()) {
-      if (price.ticker === ticker) {
-        return;
-      }
+  getAllTickers() {
+    console.log('getAllTickers called');
+    if (this.tickersSubject.getValue() !== null) {
+      return;
     }
 
-    const url = `http://localhost:8080/stockprice/${ticker}`;
+    const url = `${environment.apiUrl}/stocks`;
 
-    return this.http.get<any>(url).subscribe(
+    this.http.get<string[]>(url).subscribe(
       (data) => {
-        const arr = this.stockPriceSubject.getValue();
-        arr.push(data[0]);
-        this.stockPriceSubject.next(arr);
-        console.log(this.stockPriceSubject.getValue());
+        console.log(data);
+        this.tickersSubject.next(data);
       }
     );
   }
 
-  removeStockGroup(ticker: string) {
-    const url = `http://localhost:8080/deleteStock?id=${this.stockGroupId}&ticker=${ticker}`
-    console.log('Removing %s', ticker);
-    console.log(url);
+  getAddableTickers() {
+    // console.log('getAddableTickers called');
+    const allTickers: string[] = this.tickersSubject.getValue();
+    const portfolioTickers: string[] = this.portfolioService.getPortfolioTickers();
 
-    return this.http.get<any>(url).subscribe(
-      (data) => {
-        this.stocksSubject.next(null);
-        this.getStockGroup();
-      }
-    );
-  };
-
-  addStock(ticker: string) {
-    const url = `http://localhost:8080/addToStockGroup/${this.stockGroupId}?ticker=${ticker}`;
-
-    return this.http.get<any>(url).subscribe(
-      () => {
-        this.stocksSubject.next(null);
-        this.getStockGroup();
-      }
-    );
-  }
-
-  updateName(ticker: string, name: string) {
-    console.log('updateName: ticker=%s, name=%s', ticker, name);
-
-    const url = `http://localhost:8080/updateCorporateName/${ticker}?name=${name}`;
-
-    return this.http.get<any>(url).subscribe(
-      () => {
-        this.stocksSubject.next(null);
-        this.getStockGroup();
-      }
-    );
-  }
-
-  searchDate(date: string) {
-    const url = `http://localhost:8080/stockprice-date/${date}`;
-
-    return this.http.get<any>(url).subscribe(
-      (data) => {
-        const arr: StockPrice[] = [];
-        for (const stock of data) {
-          arr.push(new StockPrice(stock));
-        }
-        console.log(arr);
-        this.dateSearchSubject.next(arr);
-      }
-    );
-  }
-
-  getInfo(id: number) {
-    const subject = this.stocksSubject.getValue();
-
-    if (!subject) {
-      return null;
+    if (allTickers === null) {
+      return [];
     }
 
-    for (const info of subject) {
-      if (info.id === id) {
-        return info;
-      }
-    }
-
-    return null;
-  }
-
-  getPrice(ticker: string) {
-    const subject = this.stockPriceSubject.getValue();
-
-    if (!subject) {
-      return null;
-    }
-
-    for (const info of subject) {
-      if (info.ticker === ticker) {
-        return info;
-      }
-    }
-
-    return null;
+    return allTickers.filter(t => portfolioTickers.indexOf(t) < 0);
   }
 }

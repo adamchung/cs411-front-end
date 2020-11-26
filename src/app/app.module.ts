@@ -13,16 +13,21 @@ import { AppRoutes } from './app.routing';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import {HttpClientModule} from '@angular/common/http';
+import { StockComponent } from './pages/stock/stock.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    AdminLayoutComponent
+    AdminLayoutComponent,
+    StockComponent
   ],
   imports: [
     BrowserAnimationsModule,
-    RouterModule.forRoot(AppRoutes,{
+    RouterModule.forRoot(AppRoutes, {
       useHash: true
     }),
     HttpClientModule,
@@ -31,6 +36,9 @@ import {HttpClientModule} from '@angular/common/http';
     ToastrModule.forRoot(),
     FooterModule,
     FixedPluginModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

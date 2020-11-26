@@ -1,22 +1,41 @@
 <div class="row">
-  <div class="col-lg">
+  <div class="col-md-6">
     <div class="card card-stats">
       <div class="card-body">
-        <h2> Futurama </h2>
-        <ng-container *ngIf="(futurama() | async) as futurama">
-          <h6>Synopsys:</h6>
-          <p>{{futurama.synopsis}}</p>
-          <h6>Years Aired: </h6>
-          <p> Years Aired: {{futurama.yearsAired}}</p>
-          <br>
-          <h6> Creators: </h6>
-          <ng-container *ngFor="let creator of futurama.creators">
-            <p>{{creator.name}}</p>
-          </ng-container>
-        </ng-container>
+        <h3>Add Stock</h3>
+        <form [formGroup]="addStockFormGroup">
+          <mat-form-field appearance="fill">
+            <mat-label>Stocks</mat-label>
+            <mat-select formControlName="tickerCtrl">
+              <ng-container *ngIf="getPortfolio() | async">
+                <ng-container *ngIf="stockService.tickers$ | async">
+                  <ng-container *ngFor="let t of stockService.getAddableTickers()">
+                    <mat-option [value]="t">{{t}}</mat-option>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+          <button class="btn btn-outline-primary" style="margin-left: 1em" (click)="addStock()">Add</button>
+        </form>
       </div>
-      <div class="card-footer">
-        <p> This is a test footer! </p>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card card-stats">
+      <div class="card-body">
+        <h3>Remove Stock</h3>
+        <form [formGroup]="deleteStockFormGroup">
+          <mat-form-field appearance="fill">
+            <mat-label>Stocks</mat-label>
+            <mat-select formControlName="tickerCtrl">
+              <ng-container *ngFor="let s of getPortfolio() | async">
+                <mat-option [value]="s.ticker">{{s.ticker}}</mat-option>
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+          <button class="btn btn-outline-primary" style="margin-left: 1em" (click)="removeStock()">Remove</button>
+        </form>
       </div>
     </div>
   </div>
@@ -26,84 +45,44 @@
     <div class="card card-stats">
       <div class="card-body">
         <h2>My Portfolio</h2>
-        <br>
-        <form [formGroup]="addStockFormGroup">
-          <mat-form-field appearance="fill">
-            <mat-label>Stocks</mat-label>
-            <mat-select formControlName="tickerCtrl">
-              <mat-option value="AAPL">AAPL</mat-option>
-              <mat-option value="GOOG">GOOG</mat-option>
-              <mat-option value="MSFT">MSFT</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <br>
-          <mat-form-field>
-            <mat-label>New Name</mat-label>
-            <textarea matInput formControlName="nameCtrl"></textarea>
-          </mat-form-field>
-        </form>
-        <button class="btn btn-outline-primary" (click)="addStock()">Add Stock</button>
-        <button class="btn btn-outline-primary" (click)="updateName()">Update Name</button>
-        <br>
-        <form [formGroup]="dateSearchFormGroup">
-          <mat-form-field appearance="fill">
-            <mat-label>Date</mat-label>
-            <textarea matInput formControlName="dateCtrl"></textarea>
-          </mat-form-field>
-        </form>
-        <button class="btn btn-outline-primary" (click)="searchDate()">Search</button>
-        <br>
-        <br>
-        <ng-container *ngIf="stockService.dateSearch$ | async as stocks">
-          <h5>Search Result:</h5>
-          <table class="table">
-            <thead class="text-primary">
-            <th>Ticker</th>
-            <th>Date</th>
-            <th>High</th>
-            <th>Low</th>
-            <th>Open</th>
-            <th>lose</th>
-            </thead>
-            <tbody>
-              <ng-container *ngFor="let stock of stocks">
-                <tr>
-                  <td>{{stock.ticker}}</td>
-                  <td>{{stock.date | date: "fullDate"}}</td>
-                  <td>{{stock.high}}</td>
-                  <td>{{stock.low}}</td>
-                  <td>{{stock.open}}</td>
-                  <td>{{stock.close}}</td>
-                </tr>
-              </ng-container>
-            </tbody>
-          </table>
-        </ng-container>
-        <br>
-        <br>
         <div class="table-responsive">
           <table class="table">
             <thead class="text-primary">
-              <th *ngFor="let header of portfolioHeader">{{header}}</th>
-              <th></th>
+            <th *ngFor="let header of portfolioHeader">{{header}}</th>
+            <th></th>
             </thead>
             <tbody>
-            <ng-container *ngFor="let info of getStockInfo() | async">
-              <ng-container *ngIf="stockService.getPrice(info.ticker) as price">
+              <ng-container *ngIf="getPortfolio() | async as p; else loadingStocks">
+                <ng-container *ngIf="p.length > 0; else noStocks">
+                  <ng-container *ngFor="let s of p">
+                    <tr>
+                      <td>{{s.companyName}}</td>
+                      <td>{{s.ticker}}</td>
+                      <td>{{s.high | currency: 'USD'}}</td>
+                      <td>{{s.low | currency: 'USD'}}</td>
+                      <td>{{s.open | currency: 'USD'}}</td>
+                      <td>{{s.close | currency: 'USD'}}</td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary" (click)="goToStocks(s.ticker)">More</button>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </ng-container>
+                <ng-template #noStocks>
+                  <tr>
+                    <td [colSpan]="portfolioHeader.length + 1">
+                      <em>No stocks found in portfolio!</em>
+                    </td>
+                  </tr>
+                </ng-template>
+              </ng-container>
+              <ng-template #loadingStocks>
                 <tr>
-                  <td>{{info.corporateName}}</td>
-                  <td>{{info.ticker}}</td>
-                  <td>{{price.volume ? price.volume : 'N/A'}}</td>
-                  <td>{{price.high}}</td>
-                  <td>{{price.low}}</td>
-                  <td>{{price.open}}</td>
-                  <td>{{price.close}}</td>
-                  <td>
-                    <button class="btn btn-sm btn-outline-primary" (click)="remove(info.ticker)">Remove</button>
+                  <td [colSpan]="portfolioHeader.length + 1">
+                    <em>Loading...</em>
                   </td>
                 </tr>
-              </ng-container>
-            </ng-container>
+              </ng-template>
             </tbody>
           </table>
         </div>
@@ -111,38 +90,128 @@
     </div>
   </div>
 </div>
-<div class="row">
-  <div class="col">
-    <div class="card card-stats">
-      <div class="card-body">
-        <h2>Stock Information</h2>
-        <br>
-        <mat-form-field appearance="fill">
-          <mat-label>Stocks</mat-label>
-          <mat-select>
-            <ng-container *ngFor="let info of getStockInfo() | async">
-              <mat-option value="{{info.id}}">{{info.ticker}}</mat-option>
-            </ng-container>
-          </mat-select>
-        </mat-form-field>
-        <br>
-        {{currentStockId}}
-        <ng-container *ngIf="currentStockId as id">
-          <ng-container *ngIf="getStockInfo() | async">
-            <ng-container *ngIf="stockService.getInfo(currentStockId) as info">
-              <h6>Name</h6>
-              <p>{{info.corporateName}}</p>
-              <h6>Ticker</h6>
-              <p>{{info.ticker}}
-              <h6>Market Cap</h6>
-              <p>{{info.marketCap}}</p>
-            </ng-container>
-          </ng-container>
-        </ng-container>
-      </div>
-    </div>
-  </div>
-</div>
+<!--<div class="row">-->
+<!--  <div class="col">-->
+<!--    <div class="card card-stats">-->
+<!--      <div class="card-body">-->
+<!--        <h2>My Portfolio</h2>-->
+<!--        <br>-->
+<!--        <form [formGroup]="addStockFormGroup">-->
+<!--          <mat-form-field appearance="fill">-->
+<!--            <mat-label>Stocks</mat-label>-->
+<!--            <mat-select formControlName="tickerCtrl">-->
+<!--              <mat-option value="AAPL">AAPL</mat-option>-->
+<!--              <mat-option value="GOOG">GOOG</mat-option>-->
+<!--              <mat-option value="MSFT">MSFT</mat-option>-->
+<!--            </mat-select>-->
+<!--          </mat-form-field>-->
+<!--          <br>-->
+<!--          <mat-form-field>-->
+<!--            <mat-label>New Name</mat-label>-->
+<!--            <textarea matInput formControlName="nameCtrl"></textarea>-->
+<!--          </mat-form-field>-->
+<!--        </form>-->
+<!--        <button class="btn btn-outline-primary" (click)="addStock()">Add Stock</button>-->
+<!--        <button class="btn btn-outline-primary" (click)="updateName()">Update Name</button>-->
+<!--        <br>-->
+<!--        <form [formGroup]="dateSearchFormGroup">-->
+<!--          <mat-form-field appearance="fill">-->
+<!--            <mat-label>Date</mat-label>-->
+<!--            <textarea matInput formControlName="dateCtrl"></textarea>-->
+<!--          </mat-form-field>-->
+<!--        </form>-->
+<!--        <button class="btn btn-outline-primary" (click)="searchDate()">Search</button>-->
+<!--        <br>-->
+<!--        <br>-->
+<!--        <ng-container *ngIf="stockService.dateSearch$ | async as stocks">-->
+<!--          <h5>Search Result:</h5>-->
+<!--          <table class="table">-->
+<!--            <thead class="text-primary">-->
+<!--            <th>Ticker</th>-->
+<!--            <th>Date</th>-->
+<!--            <th>High</th>-->
+<!--            <th>Low</th>-->
+<!--            <th>Open</th>-->
+<!--            <th>lose</th>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--              <ng-container *ngFor="let stock of stocks">-->
+<!--                <tr>-->
+<!--                  <td>{{stock.ticker}}</td>-->
+<!--                  <td>{{stock.date | date: "fullDate"}}</td>-->
+<!--                  <td>{{stock.high}}</td>-->
+<!--                  <td>{{stock.low}}</td>-->
+<!--                  <td>{{stock.open}}</td>-->
+<!--                  <td>{{stock.close}}</td>-->
+<!--                </tr>-->
+<!--              </ng-container>-->
+<!--            </tbody>-->
+<!--          </table>-->
+<!--        </ng-container>-->
+<!--        <br>-->
+<!--        <br>-->
+<!--        <div class="table-responsive">-->
+<!--          <table class="table">-->
+<!--            <thead class="text-primary">-->
+<!--              <th *ngFor="let header of portfolioHeader">{{header}}</th>-->
+<!--              <th></th>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <ng-container *ngFor="let info of getStockInfo() | async">-->
+<!--              <ng-container *ngIf="stockService.getPrice(info.ticker) as price">-->
+<!--                <tr>-->
+<!--                  <td>{{info.corporateName}}</td>-->
+<!--                  <td>{{info.ticker}}</td>-->
+<!--                  <td>{{price.volume ? price.volume : 'N/A'}}</td>-->
+<!--                  <td>{{price.high}}</td>-->
+<!--                  <td>{{price.low}}</td>-->
+<!--                  <td>{{price.open}}</td>-->
+<!--                  <td>{{price.close}}</td>-->
+<!--                  <td>-->
+<!--                    <button class="btn btn-sm btn-outline-primary" (click)="remove(info.ticker)">Remove</button>-->
+<!--                  </td>-->
+<!--                </tr>-->
+<!--              </ng-container>-->
+<!--            </ng-container>-->
+<!--            </tbody>-->
+<!--          </table>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<!--<div class="row">-->
+<!--  <div class="col">-->
+<!--    <div class="card card-stats">-->
+<!--      <div class="card-body">-->
+<!--        <h2>Stock Information</h2>-->
+<!--        <br>-->
+<!--        <mat-form-field appearance="fill">-->
+<!--          <mat-label>Stocks</mat-label>-->
+<!--          <mat-select>-->
+<!--            <ng-container *ngFor="let info of getStockInfo() | async">-->
+<!--              <mat-option value="{{info.id}}">{{info.ticker}}</mat-option>-->
+<!--            </ng-container>-->
+<!--          </mat-select>-->
+<!--        </mat-form-field>-->
+<!--        <br>-->
+<!--        {{currentStockId}}-->
+<!--        <ng-container *ngIf="currentStockId as id">-->
+<!--          <ng-container *ngIf="getStockInfo() | async">-->
+<!--            <ng-container *ngIf="stockService.getInfo(currentStockId) as info">-->
+<!--              <h6>Name</h6>-->
+<!--              <p>{{info.corporateName}}</p>-->
+<!--              <h6>Ticker</h6>-->
+<!--              <p>{{info.ticker}}-->
+<!--              <h6>Market Cap</h6>-->
+<!--              <p>{{info.marketCap}}</p>-->
+<!--            </ng-container>-->
+<!--          </ng-container>-->
+<!--        </ng-container>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 <!--<div class="row">-->
 <!--  <div class="col-lg-3 col-md-6 col-sm-6">-->
 <!--    <div class="card card-stats">-->

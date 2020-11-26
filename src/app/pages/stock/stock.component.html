@@ -1,0 +1,82 @@
+<ng-container *ngIf="(getPortfolio() | async) as p">
+  <ng-container *ngIf="p.length > 0; else emptyPortfolio">
+    <div class="row">
+      <div class="col">
+        <h4>Select a Stock</h4>
+        <form [formGroup]="selectStockFormGroup">
+          <mat-form-field appearance="fill">
+            <mat-label>Stocks</mat-label>
+            <mat-select formControlName="tickerCtrl" [(ngModel)]="portfolioService.currentTicker">
+              <ng-container *ngFor="let s of getPortfolio() | async">
+                <mat-option [value]="s.ticker">{{s.ticker}}</mat-option>
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+        </form>
+        <br>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="card card-stats">
+          <div class="card-body">
+            <ng-container *ngIf="portfolioService.getCurrentStockInfo() as s">
+              <h2>{{s.companyName}}</h2>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h5>Ticker:</h5>
+                  <p>{{s.ticker}}</p>
+                </div>
+                <div class="col-sm-3">
+                  <h5>Market Cap:</h5>
+                  <p>{{s.marketCap | currency: 'USD'}}</p>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="card card-stats">
+          <div class="card-body">
+            <h2>Graph</h2>
+            <br>
+            <h5>Something</h5>
+            <p>Reeee</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <ng-container *ngFor="let article of getArticles() | async">
+        <div class="col-lg-6">
+          <div class="card card-stats">
+            <div class="card-body">
+              <h2>{{article.title}}</h2>
+              <p>{{article.articleDate | date: "fullDate"}}</p>
+              <p>Positivity: {{article.positivity}}</p>
+              <br>
+              <p>{{article.contents}}</p>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+  <ng-template #emptyPortfolio>
+    <div class="row">
+      <div class="col">
+        <div class="card card-stats">
+          <div class="card-body">
+            <h2>No Stocks in Portfolio</h2>
+            <p>There are no stocks added to your portfolio. Please add stocks to your portfolio</p>
+            <br>
+            <button class="btn btn-outline-primary" routerLink="/dashboard">My Portfolio</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>
