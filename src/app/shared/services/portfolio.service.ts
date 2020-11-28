@@ -3,6 +3,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {Portfolio} from '../models/portfolio';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
+import {StockService} from './stock.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,14 @@ export class PortfolioService {
   private portfolioSubject = new BehaviorSubject<Portfolio[]>(null);
   public portfolio$: Observable<Portfolio[]> = this.portfolioSubject.asObservable();
 
+  private tickersSubject = new BehaviorSubject<string[]>(null);
+  public tickers$: Observable<string[]> = this.tickersSubject.asObservable();
+
   public currentTicker: string = null;
 
   constructor(
     private http: HttpClient,
+    private stockService: StockService,
   ) {}
 
   getPortfolio() {
@@ -28,6 +33,39 @@ export class PortfolioService {
         this.setPortfolioData(data);
       }
     );
+  }
+
+  getStockInfo() {
+    this.stockService.getStockInfo(this.currentTicker);
+  }
+
+  getAllTickers() {
+    console.log('getAllTickers called');
+    if (this.tickersSubject.getValue() !== null) {
+      return;
+    }
+
+    const url = `${environment.apiUrl}/stocks`;
+
+    this.http.get<string[]>(url).subscribe(
+      (data) => {
+        console.log(data);
+        this.tickersSubject.next(data);
+        this.getStockInfo();
+      }
+    );
+  }
+
+  getAddableTickers() {
+    // console.log('getAddableTickers called');
+    const allTickers: string[] = this.tickersSubject.getValue();
+    const portfolioTickers: string[] = this.getPortfolioTickers();
+
+    if (allTickers === null) {
+      return [];
+    }
+
+    return allTickers.filter(t => portfolioTickers.indexOf(t) < 0);
   }
 
   addStock(ticker: string) {

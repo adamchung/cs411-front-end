@@ -41,7 +41,7 @@ export class StockComponent implements OnInit {
     console.log('StockComponent ngOnInit Ticker: %s', this.portfolioService.currentTicker);
     if (this.portfolioService.currentTicker) {
       this.selectStockFormGroup.setValue({'tickerCtrl': this.portfolioService.currentTicker});
-      this.stockService.getStockInfo();
+      this.portfolioService.getStockInfo();
     }
   }
 

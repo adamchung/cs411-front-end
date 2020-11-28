@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.portfolioService.getPortfolio();
-    this.stockService.getAllTickers();
+    this.portfolioService.getAllTickers();
 
     this.addStockFormGroup = this.formBuilder.group({
       tickerCtrl: ['', Validators.required]
