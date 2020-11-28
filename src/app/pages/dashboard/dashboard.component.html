@@ -1,8 +1,11 @@
 <div class="row">
   <div class="col-md-6">
-    <div class="card card-stats">
+    <div class="card card-chart">
+      <div class="card-header">
+        <h5 class="card-title">Add Stock</h5>
+        <p class="card-category">Add new stocks to your portfolio</p>
+      </div>
       <div class="card-body">
-        <h3>Add Stock</h3>
         <form [formGroup]="addStockFormGroup">
           <mat-form-field appearance="fill">
             <mat-label>Stocks</mat-label>
@@ -22,9 +25,12 @@
     </div>
   </div>
   <div class="col-md-6">
-    <div class="card card-stats">
+    <div class="card card-chart">
+      <div class="card-header">
+        <h5 class="card-title">Remove Stock</h5>
+        <p class="card-category">Remove stocks from your portfolio</p>
+      </div>
       <div class="card-body">
-        <h3>Remove Stock</h3>
         <form [formGroup]="deleteStockFormGroup">
           <mat-form-field appearance="fill">
             <mat-label>Stocks</mat-label>
@@ -42,9 +48,12 @@
 </div>
 <div class="row">
   <div class="col">
-    <div class="card card-stats">
+    <div class="card card-chart">
+      <div class="card-header">
+        <h3 class="card-title">My Portfolio</h3>
+        <p class="card-category">Browse the stocks in your portfolio</p>
+      </div>
       <div class="card-body">
-        <h2>My Portfolio</h2>
         <div class="table-responsive">
           <table class="table">
             <thead class="text-primary">
@@ -90,296 +99,31 @@
     </div>
   </div>
 </div>
-<!--<div class="row">-->
-<!--  <div class="col">-->
-<!--    <div class="card card-stats">-->
-<!--      <div class="card-body">-->
-<!--        <h2>My Portfolio</h2>-->
-<!--        <br>-->
-<!--        <form [formGroup]="addStockFormGroup">-->
-<!--          <mat-form-field appearance="fill">-->
-<!--            <mat-label>Stocks</mat-label>-->
-<!--            <mat-select formControlName="tickerCtrl">-->
-<!--              <mat-option value="AAPL">AAPL</mat-option>-->
-<!--              <mat-option value="GOOG">GOOG</mat-option>-->
-<!--              <mat-option value="MSFT">MSFT</mat-option>-->
-<!--            </mat-select>-->
-<!--          </mat-form-field>-->
-<!--          <br>-->
-<!--          <mat-form-field>-->
-<!--            <mat-label>New Name</mat-label>-->
-<!--            <textarea matInput formControlName="nameCtrl"></textarea>-->
-<!--          </mat-form-field>-->
-<!--        </form>-->
-<!--        <button class="btn btn-outline-primary" (click)="addStock()">Add Stock</button>-->
-<!--        <button class="btn btn-outline-primary" (click)="updateName()">Update Name</button>-->
-<!--        <br>-->
-<!--        <form [formGroup]="dateSearchFormGroup">-->
-<!--          <mat-form-field appearance="fill">-->
-<!--            <mat-label>Date</mat-label>-->
-<!--            <textarea matInput formControlName="dateCtrl"></textarea>-->
-<!--          </mat-form-field>-->
-<!--        </form>-->
-<!--        <button class="btn btn-outline-primary" (click)="searchDate()">Search</button>-->
-<!--        <br>-->
-<!--        <br>-->
-<!--        <ng-container *ngIf="stockService.dateSearch$ | async as stocks">-->
-<!--          <h5>Search Result:</h5>-->
-<!--          <table class="table">-->
-<!--            <thead class="text-primary">-->
-<!--            <th>Ticker</th>-->
-<!--            <th>Date</th>-->
-<!--            <th>High</th>-->
-<!--            <th>Low</th>-->
-<!--            <th>Open</th>-->
-<!--            <th>lose</th>-->
-<!--            </thead>-->
-<!--            <tbody>-->
-<!--              <ng-container *ngFor="let stock of stocks">-->
-<!--                <tr>-->
-<!--                  <td>{{stock.ticker}}</td>-->
-<!--                  <td>{{stock.date | date: "fullDate"}}</td>-->
-<!--                  <td>{{stock.high}}</td>-->
-<!--                  <td>{{stock.low}}</td>-->
-<!--                  <td>{{stock.open}}</td>-->
-<!--                  <td>{{stock.close}}</td>-->
-<!--                </tr>-->
-<!--              </ng-container>-->
-<!--            </tbody>-->
-<!--          </table>-->
-<!--        </ng-container>-->
-<!--        <br>-->
-<!--        <br>-->
-<!--        <div class="table-responsive">-->
-<!--          <table class="table">-->
-<!--            <thead class="text-primary">-->
-<!--              <th *ngFor="let header of portfolioHeader">{{header}}</th>-->
-<!--              <th></th>-->
-<!--            </thead>-->
-<!--            <tbody>-->
-<!--            <ng-container *ngFor="let info of getStockInfo() | async">-->
-<!--              <ng-container *ngIf="stockService.getPrice(info.ticker) as price">-->
-<!--                <tr>-->
-<!--                  <td>{{info.corporateName}}</td>-->
-<!--                  <td>{{info.ticker}}</td>-->
-<!--                  <td>{{price.volume ? price.volume : 'N/A'}}</td>-->
-<!--                  <td>{{price.high}}</td>-->
-<!--                  <td>{{price.low}}</td>-->
-<!--                  <td>{{price.open}}</td>-->
-<!--                  <td>{{price.close}}</td>-->
-<!--                  <td>-->
-<!--                    <button class="btn btn-sm btn-outline-primary" (click)="remove(info.ticker)">Remove</button>-->
-<!--                  </td>-->
-<!--                </tr>-->
-<!--              </ng-container>-->
-<!--            </ng-container>-->
-<!--            </tbody>-->
-<!--          </table>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-<!--<div class="row">-->
-<!--  <div class="col">-->
-<!--    <div class="card card-stats">-->
-<!--      <div class="card-body">-->
-<!--        <h2>Stock Information</h2>-->
-<!--        <br>-->
-<!--        <mat-form-field appearance="fill">-->
-<!--          <mat-label>Stocks</mat-label>-->
-<!--          <mat-select>-->
-<!--            <ng-container *ngFor="let info of getStockInfo() | async">-->
-<!--              <mat-option value="{{info.id}}">{{info.ticker}}</mat-option>-->
-<!--            </ng-container>-->
-<!--          </mat-select>-->
-<!--        </mat-form-field>-->
-<!--        <br>-->
-<!--        {{currentStockId}}-->
-<!--        <ng-container *ngIf="currentStockId as id">-->
-<!--          <ng-container *ngIf="getStockInfo() | async">-->
-<!--            <ng-container *ngIf="stockService.getInfo(currentStockId) as info">-->
-<!--              <h6>Name</h6>-->
-<!--              <p>{{info.corporateName}}</p>-->
-<!--              <h6>Ticker</h6>-->
-<!--              <p>{{info.ticker}}-->
-<!--              <h6>Market Cap</h6>-->
-<!--              <p>{{info.marketCap}}</p>-->
-<!--            </ng-container>-->
-<!--          </ng-container>-->
-<!--        </ng-container>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-<!--<div class="row">-->
-<!--  <div class="col-lg-3 col-md-6 col-sm-6">-->
-<!--    <div class="card card-stats">-->
-<!--      <div class="card-body ">-->
-<!--        <div class="row">-->
-<!--          <div class="col-5 col-md-4">-->
-<!--            <div class="icon-big text-center icon-warning">-->
-<!--              <i class="nc-icon nc-globe text-warning"></i>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="col-7 col-md-8">-->
-<!--            <div class="numbers">-->
-<!--              <p class="card-category">Capacity</p>-->
-<!--              <p class="card-title">150GB-->
-<!--                <p>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="card-footer ">-->
-<!--        <hr>-->
-<!--        <div class="stats">-->
-<!--          <i class="fa fa-refresh"></i> Update Now-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--  <div class="col-lg-3 col-md-6 col-sm-6">-->
-<!--    <div class="card card-stats">-->
-<!--      <div class="card-body ">-->
-<!--        <div class="row">-->
-<!--          <div class="col-5 col-md-4">-->
-<!--            <div class="icon-big text-center icon-warning">-->
-<!--              <i class="nc-icon nc-money-coins text-success"></i>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="col-7 col-md-8">-->
-<!--            <div class="numbers">-->
-<!--              <p class="card-category">Revenue</p>-->
-<!--              <p class="card-title">$ 1,345-->
-<!--                <p>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="card-footer ">-->
-<!--        <hr>-->
-<!--        <div class="stats">-->
-<!--          <i class="fa fa-calendar-o"></i> Last day-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--  <div class="col-lg-3 col-md-6 col-sm-6">-->
-<!--    <div class="card card-stats">-->
-<!--      <div class="card-body ">-->
-<!--        <div class="row">-->
-<!--          <div class="col-5 col-md-4">-->
-<!--            <div class="icon-big text-center icon-warning">-->
-<!--              <i class="nc-icon nc-vector text-danger"></i>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="col-7 col-md-8">-->
-<!--            <div class="numbers">-->
-<!--              <p class="card-category">Errors</p>-->
-<!--              <p class="card-title">23-->
-<!--                <p>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="card-footer ">-->
-<!--        <hr>-->
-<!--        <div class="stats">-->
-<!--          <i class="fa fa-clock-o"></i> In the last hour-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--  <div class="col-lg-3 col-md-6 col-sm-6">-->
-<!--    <div class="card card-stats">-->
-<!--      <div class="card-body ">-->
-<!--        <div class="row">-->
-<!--          <div class="col-5 col-md-4">-->
-<!--            <div class="icon-big text-center icon-warning">-->
-<!--              <i class="nc-icon nc-favourite-28 text-primary"></i>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="col-7 col-md-8">-->
-<!--            <div class="numbers">-->
-<!--              <p class="card-category">Followers</p>-->
-<!--              <p class="card-title">+45K-->
-<!--                <p>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="card-footer ">-->
-<!--        <hr>-->
-<!--        <div class="stats">-->
-<!--          <i class="fa fa-refresh"></i> Update now-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-<!--<div class="row">-->
-<!--  <div class="col-md-12">-->
-<!--    <div class="card ">-->
-<!--      <div class="card-header ">-->
-<!--        <h5 class="card-title">Users Behavior</h5>-->
-<!--        <p class="card-category">24 Hours performance</p>-->
-<!--      </div>-->
-<!--      <div class="card-body ">-->
-<!--        <canvas id=chartHours width="400" height="100"></canvas>-->
-<!--      </div>-->
-<!--      <div class="card-footer ">-->
-<!--        <hr>-->
-<!--        <div class="stats">-->
-<!--          <i class="fa fa-history"></i> Updated 3 minutes ago-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-<!--<div class="row">-->
-<!--  <div class="col-md-4">-->
-<!--    <div class="card ">-->
-<!--      <div class="card-header ">-->
-<!--        <h5 class="card-title">Email Statistics</h5>-->
-<!--        <p class="card-category">Last Campaign Performance</p>-->
-<!--      </div>-->
-<!--      <div class="card-body ">-->
-<!--        <canvas id="chartEmail"></canvas>-->
-<!--      </div>-->
-<!--      <div class="card-footer ">-->
-<!--        <div class="legend">-->
-<!--          <i class="fa fa-circle text-primary"></i> Opened-->
-<!--          <i class="fa fa-circle text-warning"></i> Read-->
-<!--          <i class="fa fa-circle text-danger"></i> Deleted-->
-<!--          <i class="fa fa-circle text-gray"></i> Unopened-->
-<!--        </div>-->
-<!--        <hr>-->
-<!--        <div class="stats">-->
-<!--          <i class="fa fa-calendar"></i> Number of emails sent-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--  <div class="col-md-8">-->
-<!--    <div class="card card-chart">-->
-<!--      <div class="card-header">-->
-<!--        <h5 class="card-title">NASDAQ: AAPL</h5>-->
-<!--        <p class="card-category">Line Chart with Points</p>-->
-<!--      </div>-->
-<!--      <div class="card-body">-->
-<!--        <canvas id="speedChart" width="400" height="100"></canvas>-->
-<!--      </div>-->
-<!--      <div class="card-footer">-->
-<!--        <div class="chart-legend">-->
-<!--          <i class="fa fa-circle text-info"></i> Tesla Model S-->
-<!--          <i class="fa fa-circle text-warning"></i> BMW 5 Series-->
-<!--        </div>-->
-<!--        <hr/>-->
-<!--        <div class="card-stats">-->
-<!--          <i class="fa fa-check"></i> Data information certified-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
+<div class="row">
+  <div class="col">
+    <div class="card card-chart">
+      <div class="card-header">
+        <h5 class="card-title">NASDAQ: AAPL</h5>
+        <p class="card-category">Line Chart with Points</p>
+      </div>
+      <div class="card-body">
+        <canvas id="speedChart" width="400" height="100"></canvas>
+      </div>
+      <div class="card-footer">
+        <div class="chart-legend">
+          <i class="fa fa-circle text-info"></i> Tesla Model S
+          <i class="fa fa-circle text-warning"></i> BMW 5 Series
+        </div>
+        <hr/>
+        <div class="card-stats">
+          <i class="fa fa-check"></i> Data information certified
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <button>Change Data</button>
+  </div>
+</div>

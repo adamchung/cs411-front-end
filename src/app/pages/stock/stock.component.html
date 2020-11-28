@@ -18,10 +18,13 @@
     </div>
     <div class="row">
       <div class="col">
-        <div class="card card-stats">
-          <div class="card-body">
-            <ng-container *ngIf="portfolioService.getCurrentStockInfo() as s">
-              <h2>{{s.companyName}}</h2>
+        <div class="card card-chart">
+          <ng-container *ngIf="portfolioService.getCurrentStockInfo() as s">
+            <div class="card-header">
+              <h3 class="card-title">{{s.companyName}}</h3>
+<!--              <p class="card-category">Historical prices</p>-->
+            </div>
+            <div class="card-body">
               <div class="row">
                 <div class="col-sm-3">
                   <h5>Ticker:</h5>
@@ -32,19 +35,33 @@
                   <p>{{s.marketCap | currency: 'USD'}}</p>
                 </div>
               </div>
-            </ng-container>
-          </div>
+            </div>
+          </ng-container>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col">
-        <div class="card card-stats">
+        <div class="card card-chart">
+          <div class="card-header">
+            <h3 class="card-title">Graph</h3>
+            <p class="card-category">Historical prices</p>
+          </div>
           <div class="card-body">
-            <h2>Graph</h2>
-            <br>
-            <h5>Something</h5>
-            <p>Reeee</p>
+            <button (click)="makeChart()">makeChart()</button>
+            <ng-container *ngIf="stockService.stockInfo$ | async as s">
+              <p>Stock Info Loaded</p>
+<!--              <ng-container *ngIf="makeChart()">-->
+<!--                <canvas id="chart" width="400" height="100"></canvas>-->
+<!--              </ng-container>-->
+<!--              <canvas id="chart" width="400" height="100"></canvas>-->
+            </ng-container>
+          </div>
+          <div class="card-footer ">
+            <hr>
+            <div class="stats">
+              <i class="fa fa-clock-o"></i>{{now | date: "\'Updated on\' MMMM d, y \'at\' h:mm a"}}
+            </div>
           </div>
         </div>
       </div>
@@ -53,9 +70,11 @@
       <ng-container *ngFor="let article of getArticles() | async">
         <div class="col-lg-6">
           <div class="card card-stats">
+            <div class="card-header">
+              <h5 class="card-title">{{article.title}}</h5>
+              <p class="card-category">{{article.articleDate | date: "fullDate"}}</p>
+            </div>
             <div class="card-body">
-              <h2>{{article.title}}</h2>
-              <p>{{article.articleDate | date: "fullDate"}}</p>
               <p>Positivity: {{article.positivity}}</p>
               <br>
               <p>{{article.contents}}</p>

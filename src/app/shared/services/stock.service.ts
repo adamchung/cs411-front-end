@@ -12,7 +12,7 @@ import {environment} from '../../../environments/environment';
 export class StockService {
 
   private stockInfoSubject = new BehaviorSubject<StockInfo>(null);
-  public stockInfo: Observable<StockInfo> = this.stockInfoSubject.asObservable();
+  public stockInfo$ : Observable<StockInfo> = this.stockInfoSubject.asObservable();
 
   private tickersSubject = new BehaviorSubject<string[]>(null);
   public tickers$: Observable<string[]> = this.tickersSubject.asObservable();
@@ -40,7 +40,7 @@ export class StockService {
 
     const url = `${environment.apiUrl}/stocks/${current}`;
 
-    this.http.get<StockInfo>(url).subscribe(
+    return this.http.get<StockInfo>(url).subscribe(
       (data) => {
         if (data) {
           this.stockInfoSubject.next(new StockInfo(data));
@@ -48,6 +48,36 @@ export class StockService {
         }
       }
     );
+  }
+
+  getChartData() {
+    if (this.tickersSubject.getValue() !== null) {
+      return null;
+    }
+
+    const data = this.stockInfoSubject.getValue();
+
+    const high: number[] = [];
+    const low: number[] = [];
+    const open: number[] = [];
+    const close: number[] = [];
+    const labels: Date[] = [];
+
+    for (const d of data.data) {
+      high.push(d.high);
+      low.push(d.low);
+      open.push(d.open);
+      close.push(d.close);
+      labels.push(d.date);
+    }
+
+    return {
+      high,
+      low,
+      open,
+      close,
+      labels,
+    };
   }
 
   getAllTickers() {

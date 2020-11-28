@@ -1,0 +1,39 @@
+<div class="login-bg">
+  <div class="row" style="margin-top: 3em">
+    <div class="col-md-3"></div>
+    <div class="col-md-6" style="margin-left: 1em; margin-right: 1em">
+      <div class="card card-stats">
+        <div class="card-body">
+          <h2>Log In</h2>
+          <form [formGroup]="loginFormGroup">
+            <div class="row">
+              <div class="col" align="center">
+                <mat-form-field>
+                  <h6>Username</h6>
+                  <textarea matInput formControlName="id"></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col" align="center">
+                <mat-form-field>
+                  <h6>Password</h6>
+                  <textarea matInput formControlName="password"></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+            <div align="center">
+              <button class="btn btn-outline-primary">Log In</button>
+              <br>
+              <br>
+              <p>Don't have an account?</p>
+              <button class="btn btn-outline-secondary" routerLink="/signup">Sign Up</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+</div>
+

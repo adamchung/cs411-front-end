@@ -12,7 +12,7 @@ export class PortfolioService {
   private portfolioSubject = new BehaviorSubject<Portfolio[]>(null);
   public portfolio$: Observable<Portfolio[]> = this.portfolioSubject.asObservable();
 
-  public currentTicker: string;
+  public currentTicker: string = null;
 
   constructor(
     private http: HttpClient,
@@ -35,7 +35,7 @@ export class PortfolioService {
 
     this.http.get<Portfolio[]>(url).subscribe(
       (data) => {
-        console.log(data);
+        // console.log(data);
         this.setPortfolioData(data);
       }
     );
@@ -46,13 +46,15 @@ export class PortfolioService {
 
     this.http.get<Portfolio[]>(url).subscribe(
       (data) => {
-        console.log(data);
+        // console.log(data);
         this.setPortfolioData(data);
       }
     );
   }
 
   setPortfolioData(data: any[]) {
+    console.log('Set portfolio data called');
+    console.log(data);
     if (data) {
       const portfolio: Portfolio[] = [];
 
@@ -67,18 +69,22 @@ export class PortfolioService {
       }
 
       this.portfolioSubject.next(portfolio);
-
+      console.log('Current ticker: %s', this.currentTicker);
       if (this.currentTicker === null || this.currentTicker === '') {
+        console.log('No current ticker!');
         this.currentTicker = data[0].ticker;
+        console.log('Ticker set to %s', this.currentTicker);
       } else {
         let found = false;
         for (const d of data) {
           if (d.ticker === this.currentTicker) {
+            console.log('Ticker found. continuing');
             found = true;
             break;
           }
         }
         if (!found) {
+          console.log('Ticker not found! setting default ticker');
           this.currentTicker = data[0].ticker;
         }
       }

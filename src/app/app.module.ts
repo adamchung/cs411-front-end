@@ -17,13 +17,17 @@ import { StockComponent } from './pages/stock/stock.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {ReactiveFormsModule} from '@angular/forms';
+import { LoginComponent } from './pages/login/login.component';
+import { SignupComponent } from './pages/signup/signup.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    StockComponent
+    StockComponent,
+    LoginComponent,
+    SignupComponent
   ],
   imports: [
     BrowserAnimationsModule,

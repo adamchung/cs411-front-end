@@ -19,8 +19,8 @@ export class Portfolio {
     this.date = new Date(data.date);
     // Time zone correction
     this.date.setTime(this.date.getTime() + this.date.getTimezoneOffset() * 60 * 1000);
-    console.log('New Portfolio created');
-    console.log(data);
-    console.log(this);
+    // console.log('New Portfolio created');
+    // console.log(data);
+    // console.log(this);
   }
 }

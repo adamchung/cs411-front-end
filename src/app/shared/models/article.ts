@@ -8,8 +8,8 @@ export class Article {
   constructor(data: any) {
     Object.assign(this, data);
 
-    if (data.articleDate) { // if there is a valid article date
-      this.articleDate = new Date(data.articleDate);
-    }
+    this.articleDate = new Date(data.articleDate);
+    // Time zone correction
+    this.articleDate.setTime(this.articleDate.getTime() + this.articleDate.getTimezoneOffset() * 60 * 1000);
   }
 }
