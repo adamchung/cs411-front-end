@@ -12,13 +12,17 @@ import {environment} from '../../../environments/environment';
 export class StockService {
 
   private stockInfoSubject = new BehaviorSubject<StockInfo>(null);
-  public stockInfo$ : Observable<StockInfo> = this.stockInfoSubject.asObservable();
+  public stockInfo$: Observable<StockInfo> = this.stockInfoSubject.asObservable();
+
+  private chartDataSubject = new BehaviorSubject<any>(null);
+  public chartData$: Observable<any> = this.chartDataSubject.asObservable();
 
   constructor(
     private http: HttpClient,
   ) {}
 
   getStockInfo(ticker: string) {
+    console.log('getStockInfo(%s)', ticker);
     if (!ticker) {
       console.log('No current ticker!');
       this.stockInfoSubject.next(null);
@@ -34,19 +38,24 @@ export class StockService {
     this.stockInfoSubject.next(null);
 
     const url = `${environment.apiUrl}/stocks/${ticker}`;
-
+    console.log('Request to %s', url);
     return this.http.get<StockInfo>(url).subscribe(
       (data) => {
         if (data) {
+          console.log('getStockInfo Response');
+          console.log(data);
           this.stockInfoSubject.next(new StockInfo(data));
+          console.log('Data set.');
           console.log(this.stockInfoSubject.getValue());
+          console.log('Making chart data');
         }
       }
     );
   }
 
-  getChartData() {
-    const data = this.stockInfoSubject.getValue();
+  makeChartData() {
+    console.log('makeChartData()');
+    const rawData = this.stockInfoSubject.getValue();
 
     const high: number[] = [];
     const low: number[] = [];
@@ -54,7 +63,7 @@ export class StockService {
     const close: number[] = [];
     const labels: Date[] = [];
 
-    for (const d of data.data) {
+    for (const d of rawData.data) {
       high.push(d.high);
       low.push(d.low);
       open.push(d.open);
@@ -63,11 +72,7 @@ export class StockService {
     }
 
     return {
-      high,
-      low,
-      open,
-      close,
-      labels,
+      high, low, open, close, labels
     };
   }
 }

@@ -6,7 +6,6 @@ import {NewsData} from '../models/news-data';
 import {sample} from 'rxjs/operators';
 import {PortfolioService} from './portfolio.service';
 import {environment} from '../../../environments/environment';
-import {Portfolio} from '../models/portfolio';
 
 @Injectable({
   providedIn: 'root'
@@ -18,13 +17,11 @@ export class ArticleService {
 
   constructor(
     private http: HttpClient,
-    private portfolioService: PortfolioService,
   ) {}
 
-  getArticles() {
+  getArticles(ticker: string) {
     console.log('GetArticles called');
-    const current = this.portfolioService.currentTicker;
-    if (!current) {
+    if (!ticker) {
       console.log('No current ticker!');
       this.articleSubject.next(null);
       return;
@@ -32,7 +29,7 @@ export class ArticleService {
 
     if (this.articleSubject.getValue() !== null
       && this.articleSubject.getValue().length > 0) {
-      if (this.articleSubject.getValue()[0].ticker === current) {
+      if (this.articleSubject.getValue()[0].ticker === ticker) {
         console.log('Data already loaded');
         return;
       }
@@ -40,7 +37,7 @@ export class ArticleService {
 
     this.articleSubject.next(null);
 
-    const url = `${environment.apiUrl}/articles?ticker=${current}`;
+    const url = `${environment.apiUrl}/articles?ticker=${ticker}`;
 
     this.http.get<NewsData[]>(url).subscribe(
       (data) => {

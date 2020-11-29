@@ -5,6 +5,7 @@ import {PortfolioService} from '../../shared/services/portfolio.service';
 import {StockService} from '../../shared/services/stock.service';
 import Chart from 'chart.js';
 
+
 @Component({
   selector: 'app-stock',
   templateUrl: './stock.component.html',
@@ -27,7 +28,6 @@ export class StockComponent implements OnInit {
   ngOnInit(): void {
     // Fetching Data
     this.portfolioService.getPortfolio();
-    this.articleService.getArticles();
 
     // Initializing Forms
     this.selectStockFormGroup = this.formBuilder.group({
@@ -38,13 +38,10 @@ export class StockComponent implements OnInit {
     this.now = new Date();
 
     // Initializing stock selection
-    console.log('StockComponent ngOnInit Ticker: %s', this.portfolioService.currentTicker);
     if (this.portfolioService.currentTicker) {
       this.selectStockFormGroup.setValue({'tickerCtrl': this.portfolioService.currentTicker});
       this.portfolioService.getStockInfo();
     }
-
-    // this.getStockInfo();
   }
 
   getPortfolio() {
@@ -54,20 +51,6 @@ export class StockComponent implements OnInit {
   getArticles() {
     return this.articleService.article$;
   }
-
-  getStockInfo() {
-    this.stockService.stockInfo$.subscribe(
-      (data) => {
-        if (data !== null) {
-          console.log('Data is not null now!');
-          this.makeChart();
-        } else {
-          console.log('Data is still null');
-        }
-      }
-    );
-  }
-
   makeChart() {
     console.log('MakeChart Called!');
     const speedCanvas = document.getElementById('chart');

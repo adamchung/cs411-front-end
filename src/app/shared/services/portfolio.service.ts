@@ -4,6 +4,7 @@ import {Portfolio} from '../models/portfolio';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {StockService} from './stock.service';
+import {ArticleService} from './article.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,18 +22,33 @@ export class PortfolioService {
   constructor(
     private http: HttpClient,
     private stockService: StockService,
+    private articleService: ArticleService,
   ) {}
 
   getPortfolio() {
+    console.log('GetPortfolio Called');
     if (this.portfolioSubject.getValue() !== null) { return; }
 
     const url = `${environment.apiUrl}/portfolio/1`;
 
+    console.log('Request to %s', url);
     this.http.get<Portfolio[]>(url).subscribe(
       (data) => {
+        console.log('Get Portfolio Response');
+        console.log(data);
+        console.log('CurrentTicker: %s', this.currentTicker);
+        console.log('Calling setPortfolioData');
         this.setPortfolioData(data);
+        console.log('After -- CurrentTicker: %s', this.currentTicker);
+        console.log('From Portfolio: Calling getStockInfo')
+        this.getStockInfo();
+        this.getArticles();
       }
     );
+  }
+
+  getArticles() {
+    this.articleService.getArticles(this.currentTicker);
   }
 
   getStockInfo() {
@@ -51,7 +67,6 @@ export class PortfolioService {
       (data) => {
         console.log(data);
         this.tickersSubject.next(data);
-        this.getStockInfo();
       }
     );
   }
@@ -75,6 +90,7 @@ export class PortfolioService {
       (data) => {
         // console.log(data);
         this.setPortfolioData(data);
+        this.getStockInfo();
       }
     );
   }
@@ -86,13 +102,12 @@ export class PortfolioService {
       (data) => {
         // console.log(data);
         this.setPortfolioData(data);
+        this.getStockInfo();
       }
     );
   }
 
   setPortfolioData(data: any[]) {
-    console.log('Set portfolio data called');
-    console.log(data);
     if (data) {
       const portfolio: Portfolio[] = [];
 
@@ -107,22 +122,17 @@ export class PortfolioService {
       }
 
       this.portfolioSubject.next(portfolio);
-      console.log('Current ticker: %s', this.currentTicker);
       if (this.currentTicker === null || this.currentTicker === '') {
-        console.log('No current ticker!');
         this.currentTicker = data[0].ticker;
-        console.log('Ticker set to %s', this.currentTicker);
       } else {
         let found = false;
         for (const d of data) {
           if (d.ticker === this.currentTicker) {
-            console.log('Ticker found. continuing');
             found = true;
             break;
           }
         }
         if (!found) {
-          console.log('Ticker not found! setting default ticker');
           this.currentTicker = data[0].ticker;
         }
       }

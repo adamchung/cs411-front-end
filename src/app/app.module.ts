@@ -19,6 +19,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {ReactiveFormsModule} from '@angular/forms';
 import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
+import { ChartComponent } from './pages/chart/chart.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { SignupComponent } from './pages/signup/signup.component';
     AdminLayoutComponent,
     StockComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    ChartComponent
   ],
   imports: [
     BrowserAnimationsModule,
