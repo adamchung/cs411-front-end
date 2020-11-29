@@ -22,39 +22,39 @@ export class StockService {
   ) {}
 
   getStockInfo(ticker: string) {
-    console.log('getStockInfo(%s)', ticker);
+    // console.log('getStockInfo(%s)', ticker);
     if (!ticker) {
-      console.log('No current ticker!');
+      // console.log('No current ticker!');
       this.stockInfoSubject.next(null);
       return;
     }
 
     if (this.stockInfoSubject.getValue() !== null
       && this.stockInfoSubject.getValue().ticker === ticker) {
-      console.log('Data already loaded');
+      // console.log('Data already loaded');
       return;
     }
 
     this.stockInfoSubject.next(null);
 
     const url = `${environment.apiUrl}/stocks/${ticker}`;
-    console.log('Request to %s', url);
+    // console.log('Request to %s', url);
     return this.http.get<StockInfo>(url).subscribe(
       (data) => {
         if (data) {
-          console.log('getStockInfo Response');
-          console.log(data);
+          // console.log('getStockInfo Response');
+          // console.log(data);
           this.stockInfoSubject.next(new StockInfo(data));
-          console.log('Data set.');
-          console.log(this.stockInfoSubject.getValue());
-          console.log('Making chart data');
+          // console.log('Data set.');
+          // console.log(this.stockInfoSubject.getValue());
+          // console.log('Making chart data');
         }
       }
     );
   }
 
   makeChartData() {
-    console.log('makeChartData()');
+    // console.log('makeChartData()');
     const rawData = this.stockInfoSubject.getValue();
 
     const high: number[] = [];

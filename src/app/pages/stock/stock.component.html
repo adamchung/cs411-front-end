@@ -62,17 +62,19 @@
         </div>
       </div>
       <div class="row">
-        <ng-container *ngFor="let article of getArticles() | async">
+        <ng-container *ngFor="let a of getArticles() | async">
           <div class="col-lg-6">
             <div class="card card-stats">
               <div class="card-header">
-                <h5 class="card-title">{{article.title}}</h5>
-                <p class="card-category">{{article.articleDate | date: "fullDate"}}</p>
+                <h5 class="card-title">{{a.title}}</h5>
+                <p class="card-category">
+                  {{a.date | date: "fullDate"}}
+                  <br>
+                  Positivity: {{a.positivity}}
+                </p>
               </div>
               <div class="card-body">
-                <p>Positivity: {{article.positivity}}</p>
-                <br>
-                <p>{{article.contents}}</p>
+                <p>{{a.contents}}</p>
               </div>
             </div>
           </div>

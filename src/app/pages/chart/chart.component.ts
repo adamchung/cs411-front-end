@@ -14,17 +14,17 @@ export class ChartComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log('Chart ngOnInit!!');
+    // console.log('Chart ngOnInit!!');
 
     this.makeChart();
   }
 
   makeChart() {
-    console.log('MakeChart called')
+    // console.log('MakeChart called')
     const canvas = document.getElementById('chart');
 
     const chartData = this.stockService.makeChartData();
-    console.log(chartData);
+    // console.log(chartData);
     const highData = chartData.high;
     const lowData = chartData.low;
     const openData = chartData.open;

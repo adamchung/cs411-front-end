@@ -9,7 +9,7 @@ export class Article {
     Object.assign(this, data);
 
     this.articleDate = new Date(data.articleDate);
-    // Time zone correction
+    // Time zone corrections
     this.articleDate.setTime(this.articleDate.getTime() + this.articleDate.getTimezoneOffset() * 60 * 1000);
   }
 }

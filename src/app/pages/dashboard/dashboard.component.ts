@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import Chart from 'chart.js';
 import {StockService} from '../../shared/services/stock.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PortfolioService} from '../../shared/services/portfolio.service';
@@ -14,18 +13,10 @@ import {Router} from '@angular/router';
 
 export class DashboardComponent implements OnInit {
 
-  public canvas: any;
-  public ctx;
-  public chartColor;
-  public chartEmail;
-  public chartHours;
-
   addStockFormGroup: FormGroup;
   deleteStockFormGroup: FormGroup;
 
   portfolioHeader = ['Name', 'Ticker', 'High', 'Low', 'Open', 'Close'];
-
-  public currentStockId = 1;
 
   constructor(
     private stockService: StockService,
@@ -44,49 +35,6 @@ export class DashboardComponent implements OnInit {
     this.deleteStockFormGroup = this.formBuilder.group({
       tickerCtrl: ['', Validators.required]
     });
-
-    const speedCanvas = document.getElementById('speedChart');
-
-    const dataFirst = {
-      data: [0, 19, 15, 20, 30, 40, 40, 50, 25, 30, 50, 70],
-      fill: false,
-      borderColor: '#fbc658',
-      backgroundColor: 'transparent',
-      pointBorderColor: '#fbc658',
-      pointRadius: 4,
-      pointHoverRadius: 4,
-      pointBorderWidth: 8,
-    };
-
-    const dataSecond = {
-      data: [0, 5, 10, 12, 20, 27, 30, 34, 42, 45, 55, 63],
-      fill: false,
-      borderColor: '#51CACF',
-      backgroundColor: 'transparent',
-      pointBorderColor: '#51CACF',
-      pointRadius: 4,
-      pointHoverRadius: 4,
-      pointBorderWidth: 8
-    };
-
-    const speedData = {
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      datasets: [dataFirst, dataSecond]
-    };
-
-    const chartOptions = {
-      legend: {
-        display: false,
-        position: 'top'
-      }
-    };
-
-    const lineChart = new Chart(speedCanvas, {
-      type: 'line',
-      hover: false,
-      data: speedData,
-      options: chartOptions
-    });
   }
 
 
@@ -98,7 +46,7 @@ export class DashboardComponent implements OnInit {
     console.log('goToStocks(%s)', ticker);
     this.portfolioService.currentTicker = ticker;
 
-    this.router.navigateByUrl('/stock');
+    this.router.navigateByUrl('/stock').then();
   }
 
   addStock() {

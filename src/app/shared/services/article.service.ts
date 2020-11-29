@@ -17,9 +17,9 @@ export class ArticleService {
   ) {}
 
   getArticles(ticker: string) {
-    console.log('GetArticles called');
+    // console.log('GetArticles called');
     if (!ticker) {
-      console.log('No current ticker!');
+      // console.log('No current ticker!');
       this.articleSubject.next(null);
       return;
     }
@@ -27,7 +27,7 @@ export class ArticleService {
     if (this.articleSubject.getValue() !== null
       && this.articleSubject.getValue().length > 0) {
       if (this.articleSubject.getValue()[0].ticker === ticker) {
-        console.log('Data already loaded');
+        // console.log('Data already loaded');
         return;
       }
     }
@@ -38,7 +38,8 @@ export class ArticleService {
 
     this.http.get<NewsData[]>(url).subscribe(
       (data) => {
-        console.log(data);
+        // console.log('Raw Data response');
+        // console.log(data);
         if (data && data.length > 0) {
           const news: NewsData[] = [];
 
@@ -47,7 +48,7 @@ export class ArticleService {
           }
 
           this.articleSubject.next(news);
-          console.log(this.articleSubject.getValue());
+          // console.log(this.articleSubject.getValue());
         } else {
           this.articleSubject.next(null);
         }

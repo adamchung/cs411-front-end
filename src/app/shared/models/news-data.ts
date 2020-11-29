@@ -2,7 +2,7 @@ export class NewsData {
   articleID: number;
   title: string;
   contents: string;
-  articleDate: Date;
+  date: Date;
   positivity: number;
   ticker: string;
 
@@ -10,9 +10,9 @@ export class NewsData {
     Object.assign(this, data);
 
     // Creating date object
-    if (this.articleDate) {
-      this.articleDate = new Date(data.articleDate);
-      this.articleDate.setTime(this.articleDate.getTime() + this.articleDate.getTimezoneOffset() * 60 * 1000);
+    if (data.date) {
+      this.date = new Date(data.date);
+      this.date.setTime(this.date.getTime() + this.date.getTimezoneOffset() * 60 * 1000);
     }
   }
 }

@@ -26,21 +26,21 @@ export class PortfolioService {
   ) {}
 
   getPortfolio() {
-    console.log('GetPortfolio Called');
+    // console.log('GetPortfolio Called');
     if (this.portfolioSubject.getValue() !== null) { return; }
 
     const url = `${environment.apiUrl}/portfolio/1`;
 
-    console.log('Request to %s', url);
+    // console.log('Request to %s', url);
     this.http.get<Portfolio[]>(url).subscribe(
       (data) => {
-        console.log('Get Portfolio Response');
-        console.log(data);
-        console.log('CurrentTicker: %s', this.currentTicker);
-        console.log('Calling setPortfolioData');
+        // console.log('Get Portfolio Response');
+        // console.log(data);
+        // console.log('CurrentTicker: %s', this.currentTicker);
+        // console.log('Calling setPortfolioData');
         this.setPortfolioData(data);
-        console.log('After -- CurrentTicker: %s', this.currentTicker);
-        console.log('From Portfolio: Calling getStockInfo')
+        // console.log('After -- CurrentTicker: %s', this.currentTicker);
+        // console.log('From Portfolio: Calling getStockInfo')
         this.getStockInfo();
         this.getArticles();
       }
@@ -56,7 +56,7 @@ export class PortfolioService {
   }
 
   getAllTickers() {
-    console.log('getAllTickers called');
+    // console.log('getAllTickers called');
     if (this.tickersSubject.getValue() !== null) {
       return;
     }
@@ -65,7 +65,7 @@ export class PortfolioService {
 
     this.http.get<string[]>(url).subscribe(
       (data) => {
-        console.log(data);
+        // console.log(data);
         this.tickersSubject.next(data);
       }
     );
