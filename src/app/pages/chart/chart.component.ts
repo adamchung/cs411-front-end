@@ -37,6 +37,7 @@ export class ChartComponent implements OnInit {
     }
 
     const high = {
+      label: 'High',
       data: highData,
       fill: false,
       borderColor: '#69ee53',
@@ -48,6 +49,7 @@ export class ChartComponent implements OnInit {
     };
 
     const low = {
+      label: 'Low',
       data: lowData,
       fill: false,
       borderColor: '#ee5353',
@@ -59,6 +61,7 @@ export class ChartComponent implements OnInit {
     };
 
     const open = {
+      label: 'Open',
       data: openData,
       fill: false,
       borderColor: '#76bfe7',
@@ -70,6 +73,7 @@ export class ChartComponent implements OnInit {
     };
 
     const close = {
+      label: 'Close',
       data: closeData,
       fill: false,
       borderColor: '#304e5e',
@@ -87,14 +91,14 @@ export class ChartComponent implements OnInit {
 
     const chartOptions = {
       legend: {
-        display: false,
-        position: 'top'
+        display: true,
+        position: 'bottom'
       }
     };
 
     const lineChart = new Chart(canvas, {
       type: 'line',
-      hover: false,
+      hover: true,
       data: data,
       options: chartOptions,
     });

@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {StockInfo} from '../models/stock-info';
 import {NewsData} from '../models/news-data';
-import {sample} from 'rxjs/operators';
-import {PortfolioService} from './portfolio.service';
 import {environment} from '../../../environments/environment';
 
 @Injectable({
