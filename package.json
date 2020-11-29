@@ -26,6 +26,7 @@
     "@angular/router": "10.1.5",
     "@ng-bootstrap/ng-bootstrap": "7.0.0",
     "@ngui/map": "0.30.3",
+    "@swimlane/ngx-charts": "^16.0.0",
     "@types/googlemaps": "3.39.14",
     "arrive": "2.4.1",
     "bootstrap": "4.5.2",
@@ -42,7 +43,7 @@
     "zone.js": "0.11.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "0.1001.5",
+    "@angular-devkit/build-angular": "^0.1100.2",
     "@angular/cli": "10.1.5",
     "@angular/compiler-cli": "10.1.5",
     "@types/bootstrap": "5.0.0",

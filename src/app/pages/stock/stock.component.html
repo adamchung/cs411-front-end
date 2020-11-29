@@ -48,14 +48,14 @@
             <p class="card-category">Historical prices</p>
           </div>
           <div class="card-body">
-            <button (click)="makeChart()">makeChart()</button>
-            <ng-container *ngIf="stockService.stockInfo$ | async as s">
-              <p>Stock Info Loaded</p>
-<!--              <ng-container *ngIf="makeChart()">-->
-<!--                <canvas id="chart" width="400" height="100"></canvas>-->
+<!--            <button (click)="makeChart()">makeChart()</button>-->
+<!--            <ng-container *ngIf="stockService.stockInfo$ | async as s">-->
+<!--              <p>Stock Info Loaded</p>-->
+<!--&lt;!&ndash;              <ng-container *ngIf="makeChart()">&ndash;&gt;-->
+                <canvas id="chart" width="400" height="100"></canvas>
 <!--              </ng-container>-->
 <!--              <canvas id="chart" width="400" height="100"></canvas>-->
-            </ng-container>
+<!--            </ng-container>-->
           </div>
           <div class="card-footer ">
             <hr>

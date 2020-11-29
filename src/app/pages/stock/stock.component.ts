@@ -43,6 +43,8 @@ export class StockComponent implements OnInit {
       this.selectStockFormGroup.setValue({'tickerCtrl': this.portfolioService.currentTicker});
       this.portfolioService.getStockInfo();
     }
+
+    // this.getStockInfo();
   }
 
   getPortfolio() {
@@ -53,7 +55,21 @@ export class StockComponent implements OnInit {
     return this.articleService.article$;
   }
 
+  getStockInfo() {
+    this.stockService.stockInfo$.subscribe(
+      (data) => {
+        if (data !== null) {
+          console.log('Data is not null now!');
+          this.makeChart();
+        } else {
+          console.log('Data is still null');
+        }
+      }
+    );
+  }
+
   makeChart() {
+    console.log('MakeChart Called!');
     const speedCanvas = document.getElementById('chart');
 
     const dataFirst = {
