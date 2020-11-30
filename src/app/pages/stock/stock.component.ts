@@ -41,6 +41,7 @@ export class StockComponent implements OnInit {
     if (this.portfolioService.currentTicker) {
       this.selectStockFormGroup.setValue({'tickerCtrl': this.portfolioService.currentTicker});
       this.portfolioService.getStockInfo();
+      this.portfolioService.getArticles();
     }
   }
 

@@ -45,7 +45,6 @@ export class DashboardComponent implements OnInit {
   goToStocks(ticker: string) {
     console.log('goToStocks(%s)', ticker);
     this.portfolioService.currentTicker = ticker;
-
     this.router.navigateByUrl('/stock').then();
   }
 

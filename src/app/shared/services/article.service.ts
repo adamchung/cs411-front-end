@@ -34,13 +34,14 @@ export class ArticleService {
 
     this.articleSubject.next(null);
 
-    const url = `${environment.apiUrl}/articles?ticker=${ticker}`;
-
+    const url = `${environment.apiUrl}/articles/${ticker}?endDate=2020-11-29&startDate=2020-10-30`;
+    console.log('Getting articles for %s', ticker);
     this.http.get<NewsData[]>(url).subscribe(
       (data) => {
-        // console.log('Raw Data response');
-        // console.log(data);
+        console.log('Raw Data response');
+        console.log(data);
         if (data && data.length > 0) {
+
           const news: NewsData[] = [];
 
           for (const d of data) {

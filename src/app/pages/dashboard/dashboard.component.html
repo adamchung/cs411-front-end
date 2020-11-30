@@ -8,18 +8,8 @@
       <div class="card-body">
         <form [formGroup]="addStockFormGroup">
           <mat-form-field appearance="fill">
-            <mat-label>Stocks</mat-label>
-            <mat-select formControlName="tickerCtrl">
-              <ng-container *ngIf="getPortfolio() | async">
-                <ng-container *ngIf="portfolioService.tickers$ | async">
-
-                  
-                  <ng-container *ngFor="let t of portfolioService.getAddableTickers()">
-                    <mat-option [value]="t">{{t}}</mat-option>
-                  </ng-container>
-                </ng-container>
-              </ng-container>
-            </mat-select>
+            <mat-label>Add Stock</mat-label>
+            <textarea matInput formControlName="tickerCtrl"></textarea>
           </mat-form-field>
           <button class="btn btn-outline-primary" style="margin-left: 1em" (click)="addStock()">Add</button>
         </form>

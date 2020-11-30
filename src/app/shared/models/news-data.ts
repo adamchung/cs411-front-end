@@ -5,6 +5,7 @@ export class NewsData {
   date: Date;
   positivity: number;
   ticker: string;
+  link: string;
 
   constructor(data: any) {
     Object.assign(this, data);
