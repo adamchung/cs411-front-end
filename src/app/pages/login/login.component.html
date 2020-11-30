@@ -23,6 +23,9 @@
               </div>
             </div>
             <div align="center">
+              <ng-container *ngIf="this.authService.loginFail$ | async">
+                <p style="color: #bb5151"><em>Please check your username or password.</em></p>
+              </ng-container>
               <button class="btn btn-outline-primary" (click)="login()">Log In</button>
               <br>
               <br>

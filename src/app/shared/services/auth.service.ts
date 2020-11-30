@@ -10,7 +10,10 @@ import {Router} from '@angular/router';
 export class AuthService {
 
   private idSubject = new BehaviorSubject<string>(null);
-  public id: Observable<string> = this.idSubject.asObservable();
+  public id$: Observable<string> = this.idSubject.asObservable();
+
+  private loginFailSubject = new BehaviorSubject<boolean>(false);
+  public loginFail$: Observable<boolean> = this.loginFailSubject.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -29,10 +32,16 @@ export class AuthService {
           console.log('Failed login.');
           this.idSubject.next(null);
         } else {
+          this.loginFailSubject.next(false);
           this.idSubject.next(data[0]);
           this.router.navigateByUrl('/');
         }
-    });
+      },
+      (error) => {
+        console.log(error);
+        this.loginFailSubject.next(true);
+      }
+    );
   }
 
   logout() {
@@ -41,6 +50,7 @@ export class AuthService {
   }
 
   signup(id: string, pw: string) {
+
 
   }
 
