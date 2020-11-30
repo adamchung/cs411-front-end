@@ -20,6 +20,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { ChartComponent } from './pages/chart/chart.component';
+import {MatInputModule} from '@angular/material/input';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { ChartComponent } from './pages/chart/chart.component';
     FooterModule,
     FixedPluginModule,
     MatFormFieldModule,
+    MatInputModule,
     MatSelectModule,
     ReactiveFormsModule,
   ],
