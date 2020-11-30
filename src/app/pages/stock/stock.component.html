@@ -62,25 +62,33 @@
         </div>
       </div>
       <div class="row">
-        <ng-container *ngFor="let a of getArticles() | async">
-          <div class="col-lg-6">
-            <div class="card card-stats">
-              <div class="card-header">
-                <a href="{{a.link}}">
-                  <h5 class="card-title">{{a.title}}</h5>
-                </a>
-                <p class="card-category">
-                  {{a.date | date: "fullDate"}}
-                  <br>
-                  Positivity: {{a.positivity}}
-                </p>
-              </div>
-              <div class="card-body">
-                <p>{{a.contents}}</p>
+        <ng-container *ngIf="getArticles() | async as articles; else loadingArticles">
+          <ng-container *ngFor="let a of articles">
+            <div class="col-lg-6">
+              <div class="card card-stats">
+                <div class="card-header">
+                  <a href="{{a.link}}">
+                    <h5 class="card-title">{{a.title}}</h5>
+                  </a>
+                  <p class="card-category">
+                    {{a.date | date: "fullDate"}}
+                    <br>
+                    Positivity: {{a.positivity}}
+                  </p>
+                </div>
+                <div class="card-body">
+                  <p>{{a.contents}}</p>
+                </div>
               </div>
             </div>
-          </div>
+          </ng-container>
         </ng-container>
+        <ng-template #loadingArticles>
+          <div class="col" align="center">
+            <br>
+            <h5>Loading Articles...</h5>
+          </div>
+        </ng-template>
       </div>
     </ng-container>
   </ng-container>
