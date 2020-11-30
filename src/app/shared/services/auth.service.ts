@@ -20,7 +20,7 @@ export class AuthService {
     private router: Router,
   ) {
     // For testing
-    // this.idSubject.next('test1');
+    this.idSubject.next('test1');
   }
 
   login(id: string, pw: string) {

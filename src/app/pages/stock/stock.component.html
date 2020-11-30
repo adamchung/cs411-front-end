@@ -7,7 +7,7 @@
           <form [formGroup]="selectStockFormGroup">
             <mat-form-field appearance="fill">
               <mat-label>Stocks</mat-label>
-              <mat-select formControlName="tickerCtrl" [(ngModel)]="portfolioService.currentTicker">
+              <mat-select formControlName="tickerCtrl" (change)="tickerChanged()">
                 <ng-container *ngFor="let s of p">
                   <mat-option [value]="s.ticker">{{s.ticker}}</mat-option>
                 </ng-container>
@@ -67,7 +67,7 @@
             <div class="card card-stats">
               <div class="card-header">
                 <a href="{{a.link}}">
-                  <h5 class="card-title" href="{{a.link}}">{{a.title}}</h5>
+                  <h5 class="card-title">{{a.title}}</h5>
                 </a>
                 <p class="card-category">
                   {{a.date | date: "fullDate"}}

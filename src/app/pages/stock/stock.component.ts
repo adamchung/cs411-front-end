@@ -45,6 +45,11 @@ export class StockComponent implements OnInit {
     }
   }
 
+  tickerChanged() {
+    const newTicker = this.selectStockFormGroup.get('tickerCtrl').value;
+    console.log('Ticker changed to %s', newTicker);
+  }
+
   getPortfolio() {
     return this.portfolioService.portfolio$;
   }
