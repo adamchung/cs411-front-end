@@ -56,6 +56,7 @@ export class StockService {
   makeChartData() {
     // console.log('makeChartData()');
     const rawData = this.stockInfoSubject.getValue();
+    console.log(rawData);
 
     const high: number[] = [];
     const low: number[] = [];

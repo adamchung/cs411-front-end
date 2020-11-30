@@ -24,7 +24,7 @@ export class ChartComponent implements OnInit {
     const canvas = document.getElementById('chart');
 
     const chartData = this.stockService.makeChartData();
-    // console.log(chartData);
+    console.log(chartData);
     const highData = chartData.high;
     const lowData = chartData.low;
     const openData = chartData.open;

@@ -12,6 +12,8 @@
             <mat-select formControlName="tickerCtrl">
               <ng-container *ngIf="getPortfolio() | async">
                 <ng-container *ngIf="portfolioService.tickers$ | async">
+
+                  
                   <ng-container *ngFor="let t of portfolioService.getAddableTickers()">
                     <mat-option [value]="t">{{t}}</mat-option>
                   </ng-container>

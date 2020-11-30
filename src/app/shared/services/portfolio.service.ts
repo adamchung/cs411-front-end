@@ -29,7 +29,7 @@ export class PortfolioService {
     // console.log('GetPortfolio Called');
     if (this.portfolioSubject.getValue() !== null) { return; }
 
-    const url = `${environment.apiUrl}/portfolio/1`;
+    const url = `${environment.apiUrl}/portfolio/test1`;
 
     // console.log('Request to %s', url);
     this.http.get<Portfolio[]>(url).subscribe(
@@ -84,7 +84,7 @@ export class PortfolioService {
   }
 
   addStock(ticker: string) {
-    const url = `${environment.apiUrl}/portfolio/1/add?ticker=${ticker}`;
+    const url = `${environment.apiUrl}/portfolio/test1/add?ticker=${ticker}`;
 
     this.http.get<Portfolio[]>(url).subscribe(
       (data) => {
@@ -96,7 +96,7 @@ export class PortfolioService {
   }
 
   removeStock(ticker: string) {
-    const url = `${environment.apiUrl}/portfolio/1/delete?ticker=${ticker}`;
+    const url = `${environment.apiUrl}/portfolio/test1/delete?ticker=${ticker}`;
 
     this.http.get<Portfolio[]>(url).subscribe(
       (data) => {

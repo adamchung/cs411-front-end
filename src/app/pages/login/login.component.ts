@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     const id = this.loginFormGroup.get('id').value;
-    const pw = this.loginFormGroup.get('passwoed').value;
+    const pw = this.loginFormGroup.get('password').value;
     console.log('Log In: %s, %s', id, pw);
   }
 
