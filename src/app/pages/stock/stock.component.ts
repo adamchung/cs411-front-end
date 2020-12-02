@@ -54,6 +54,14 @@ export class StockComponent implements OnInit {
     return this.portfolioService.portfolio$;
   }
 
+  goToStock(newTicker: string) {
+    console.log('goToStock(%s)', newTicker);
+    this.selectStockFormGroup.setValue({'tickerCtrl': newTicker});
+    this.portfolioService.currentTicker = newTicker;
+    this.portfolioService.getStockInfo();
+    this.portfolioService.getArticles();
+  }
+
   makeChart() {
     // console.log('MakeChart Called!');
     const speedCanvas = document.getElementById('chart');

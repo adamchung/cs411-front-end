@@ -1,4 +1,4 @@
-<ng-container *ngIf="getPortfolio() | async as p">
+<ng-container *ngIf="getPortfolio() | async as p; else loading">
   <ng-container *ngIf="p.length > 0; else emptyPortfolio">
     <ng-container *ngIf="stockService.stockInfo$ | async as i">
       <div class="row">
@@ -61,6 +61,28 @@
           </div>
         </div>
       </div>
+      <ng-container *ngIf="stockService.relatedStocks$ | async as tickers">
+        <div class="row">
+          <div class="col">
+            <div class="card card-chart">
+              <div class="card-header">
+                <h3 class="card-title">Related Stocks</h3>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <ng-container *ngFor="let ticker of tickers">
+                    <div class="col-sm-3">
+                      <button class="btn btn-outline-primary" (click)="goToStock(ticker)">
+                        {{ticker}}
+                      </button>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
       <div class="row">
         <ng-container *ngIf="this.articleService.bigArticle$ | async as articles; else loadingBigArticles">
           <ng-container *ngIf="articles.length > 0; else noBigArticles">
@@ -160,3 +182,9 @@
     </div>
   </ng-template>
 </ng-container>
+<ng-template #loading>
+  <div class="col" align="center">
+    <br>
+    <h5>Loading...</h5>
+  </div>
+</ng-template>

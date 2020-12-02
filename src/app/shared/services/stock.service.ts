@@ -17,6 +17,9 @@ export class StockService {
   private chartDataSubject = new BehaviorSubject<any>(null);
   public chartData$: Observable<any> = this.chartDataSubject.asObservable();
 
+  private relatedStocksSubject = new BehaviorSubject<string[]>(null);
+  public relatedStocks$: Observable<string[]> = this.relatedStocksSubject.asObservable();
+
   constructor(
     private http: HttpClient,
   ) {}
@@ -37,6 +40,8 @@ export class StockService {
 
     this.stockInfoSubject.next(null);
 
+    this.getRelatedStocks(ticker);
+
     const url = `${environment.apiUrl}/stocks/${ticker}`;
     // console.log('Request to %s', url);
     return this.http.get<StockInfo>(url).subscribe(
@@ -49,6 +54,24 @@ export class StockService {
           // console.log(this.stockInfoSubject.getValue());
           // console.log('Making chart data');
         }
+      }
+    );
+  }
+
+  getRelatedStocks(ticker: string) {
+    if (!ticker) {
+      // console.log('No current ticker!');
+      this.relatedStocksSubject.next(null);
+      return;
+    }
+
+    this.relatedStocksSubject.next(null);
+
+    const url = `${environment.apiUrl}/stocks/${ticker}/related`;
+
+    return this.http.get<string[]>(url).subscribe(
+      (data) => {
+        this.relatedStocksSubject.next(data);
       }
     );
   }
