@@ -23,7 +23,7 @@ export class DashboardComponent implements OnInit {
 
   portfolioHeader = ['Name', 'Ticker', 'High', 'Low', 'Open', 'Close'];
 
-  // vals for calendar
+  // dates for calendar
   today: Date;
   maxDate: Date;
   minDate: Date;
@@ -36,18 +36,18 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     ) {
     this.today = new Date();
-    const maxDate = new Date(
+    this.maxDate = new Date(
       this.today.getFullYear(),
       this.today.getMonth(),
       this.today.getHours() > 17 ? this.today.getDate() : this.today.getDate() - 1
     );
-    const minDate = new Date(
+    this.minDate = new Date(
       this.today.getFullYear(),
       this.today.getMonth(),
-      this.today.getDate() - 30
+      this.today.getDate() - 60
     );
-    console.log(maxDate);
-    console.log(minDate);
+    console.log(this.maxDate);
+    console.log(this.minDate);
   }
 
   ngOnInit() {
@@ -81,12 +81,9 @@ export class DashboardComponent implements OnInit {
       return false;
     }
 
-    // if (d.getTime() > this.maxDate.getTime()) {
-    //   return false;
-    // }
-    // // if (d < this.minDate) {
-    // //   return false;
-    // // }
+    if (d.getFullYear() === 2020 && d.getMonth() === 10 && d.getDate() === 26) {
+      return false;
+    }
 
     return true;
   }
