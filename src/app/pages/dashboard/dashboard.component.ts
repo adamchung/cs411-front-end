@@ -44,7 +44,7 @@ export class DashboardComponent implements OnInit {
     this.minDate = new Date(
       this.today.getFullYear(),
       this.today.getMonth(),
-      this.today.getDate() - 60
+      this.today.getDate() - 30
     );
     console.log(this.maxDate);
     console.log(this.minDate);
