@@ -39,7 +39,7 @@ export class ArticleService {
     this.articleSubject.next(null);
     this.bigArticleSubject.next(null);
 
-    const url = `${environment.apiUrl}/articles/${ticker}?endDate=2020-11-29&startDate=2020-10-30`;
+    const url = `${environment.apiUrl}/articles/${ticker}?endDate=2020-11-29&startDate=2020-12-01`;
     console.log('Getting articles for %s', ticker);
     this.http.get<NewsData[]>(url).subscribe(
       (data) => {
@@ -51,7 +51,6 @@ export class ArticleService {
           for (const d of data) {
             news.push(new NewsData(d));
           }
-
           this.articleSubject.next(news);
           // console.log(this.articleSubject.getValue());
         } else {

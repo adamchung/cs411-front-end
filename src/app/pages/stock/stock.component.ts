@@ -18,6 +18,8 @@ export class StockComponent implements OnInit {
   // Stock Form
   selectStockFormGroup: FormGroup;
 
+  MAX_LENGTH = 500;
+
   constructor(
     private articleService: ArticleService,
     private portfolioService: PortfolioService,

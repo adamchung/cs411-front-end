@@ -54,5 +54,8 @@ export class BigNewsData {
       this.articleDate = new Date(data.articleDate);
       this.articleDate.setTime(this.articleDate.getTime() + this.articleDate.getTimezoneOffset() * 60 * 1000);
     }
+
+    // Truncating contents
+
   }
 }

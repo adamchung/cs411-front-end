@@ -44,50 +44,69 @@
       <div class="card-header">
         <ng-container *ngIf="authService.id$ | async as id">
           <h3 class="card-title">{{id}}'s Portfolio</h3>
-          <p class="card-category">Browse the stocks in your portfolio</p>
+          <ng-container *ngIf="getPortfolio() | async as p">
+            <ng-container *ngIf="p.length > 0">
+              <p class="card-category">Current Date: {{p[0].date | date: 'longDate'}}</p>
+            </ng-container>
+          </ng-container>
         </ng-container>
       </div>
       <div class="card-body">
-        <div class="table-responsive">
-          <table class="table" style="">
-            <thead class="text-primary">
-            <th *ngFor="let header of portfolioHeader">{{header}}</th>
-            <th></th>
-            </thead>
-            <tbody>
-              <ng-container *ngIf="getPortfolio() | async as p; else loadingStocks">
-                <ng-container *ngIf="p.length > 0; else noStocks">
-                  <ng-container *ngFor="let s of p">
+        <div class="row">
+          <div class="col">
+            <form [formGroup]="updateDateFormGroup">
+              <mat-form-field appearance="fill">
+                <mat-label>Change Date: YYYY-MM-DD</mat-label>
+                <textarea matInput formControlName="date"></textarea>
+              </mat-form-field>
+              <button class="btn btn-outline-primary" style="margin-left: 1em" (click)="updateDate()">Change Date</button>
+            </form>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="table-responsive">
+              <table class="table" style="">
+                <thead class="text-primary">
+                <th *ngFor="let header of portfolioHeader">{{header}}</th>
+                <th></th>
+                </thead>
+                <tbody>
+                <ng-container *ngIf="getPortfolio() | async as p; else loadingStocks">
+                  <ng-container *ngIf="p.length > 0; else noStocks">
+                    <ng-container *ngFor="let s of p">
+                      <tr>
+                        <td>{{s.companyName}}</td>
+                        <td>{{s.ticker}}</td>
+                        <td>{{s.high | currency: 'USD'}}</td>
+                        <td>{{s.low | currency: 'USD'}}</td>
+                        <td>{{s.open | currency: 'USD'}}</td>
+                        <td>{{s.close | currency: 'USD'}}</td>
+                        <td>
+                          <button class="btn btn-sm btn-outline-primary" (click)="goToStocks(s.ticker)">More</button>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </ng-container>
+                  <ng-template #noStocks>
                     <tr>
-                      <td>{{s.companyName}}</td>
-                      <td>{{s.ticker}}</td>
-                      <td>{{s.high | currency: 'USD'}}</td>
-                      <td>{{s.low | currency: 'USD'}}</td>
-                      <td>{{s.open | currency: 'USD'}}</td>
-                      <td>{{s.close | currency: 'USD'}}</td>
-                      <td>
-                        <button class="btn btn-sm btn-outline-primary" (click)="goToStocks(s.ticker)">More</button>
+                      <td [colSpan]="portfolioHeader.length + 1">
+                        <em>No stocks found in portfolio!</em>
                       </td>
                     </tr>
-                  </ng-container>
+                  </ng-template>
                 </ng-container>
-                <ng-template #noStocks>
+                <ng-template #loadingStocks>
                   <tr>
                     <td [colSpan]="portfolioHeader.length + 1">
-                      <em>No stocks found in portfolio!</em>
+                      <em>Loading...</em>
                     </td>
                   </tr>
                 </ng-template>
-              </ng-container>
-              <ng-template #loadingStocks>
-                <tr>
-                  <td [colSpan]="portfolioHeader.length + 1">
-                    <em>Loading...</em>
-                  </td>
-                </tr>
-              </ng-template>
-            </tbody>
-          </table>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>

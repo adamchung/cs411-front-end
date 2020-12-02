@@ -50,6 +50,25 @@ export class PortfolioService {
     );
   }
 
+  updatePortfolioDate(date: string) {
+    console.log('UpdateDate called');
+    if (this.portfolioSubject.getValue() === null) { return; }
+
+    const id = this.authService.getId();
+    const url = `${environment.apiUrl}/portfolio/${id}?date=${date}`;
+    console.log(url);
+    this.http.get<Portfolio[]>(url).subscribe(
+      (data) => {
+        if (data !== null && data.length > 0) {
+          console.log('Update date: Updating Portfolio Data');
+          console.log(data)
+          this.setPortfolioData(data);
+        }
+      }
+    );
+  }
+
+
   getArticles() {
     this.articleService.getArticles(this.currentTicker);
   }

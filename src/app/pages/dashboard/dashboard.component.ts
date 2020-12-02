@@ -19,6 +19,8 @@ export class DashboardComponent implements OnInit {
 
   updateNameFormGroup: FormGroup;
 
+  updateDateFormGroup: FormGroup;
+
   portfolioHeader = ['Name', 'Ticker', 'High', 'Low', 'Open', 'Close'];
 
   constructor(
@@ -42,6 +44,10 @@ export class DashboardComponent implements OnInit {
 
     this.updateNameFormGroup = this.formBuilder.group({
       newName: ['', Validators.required]
+    });
+
+    this.updateDateFormGroup = this.formBuilder.group({
+      date: ['', Validators.required]
     });
   }
 
@@ -71,5 +77,11 @@ export class DashboardComponent implements OnInit {
   rename() {
     const newName = this.updateNameFormGroup.get('newName').value;
     this.authService.renameUser(newName);
+  }
+
+  updateDate() {
+    const newDate = this.updateDateFormGroup.get('date').value;
+    console.log('New Date: %s', newDate);
+    this.portfolioService.updatePortfolioDate(newDate);
   }
 }
