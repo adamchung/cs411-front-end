@@ -16,18 +16,6 @@ export class NewsData {
       this.date.setTime(this.date.getTime() + this.date.getTimezoneOffset() * 60 * 1000);
     }
 
-    // Updated code for neo4j
-    // if (data.length === 6) {
-    //   this.title = data[0];
-    //   this.contents = data[1];
-    //   this.positivity = data[3];
-    //   this.ticker = data[4];
-    //   this.articleID = data[5];
-    //
-    //   this.date = new Date(data[2]);
-    //   this.date.setTime(this.date.getTime() + this.date.getTimezoneOffset() * 60 * 1000);
-    // }
-
   }
 }
 
@@ -37,7 +25,7 @@ export class BigNewsData {
   percentdiff: number;
   title: string;
   contents: string;
-  articleDate: Date;
+  articledate: Date;
   positivity: number;
   link: string;
   articleID: number;
@@ -50,9 +38,9 @@ export class BigNewsData {
       this.bigdate.setTime(this.bigdate.getTime() + this.bigdate.getTimezoneOffset() * 60 * 1000);
     }
 
-    if (data.articleDate) {
-      this.articleDate = new Date(data.articleDate);
-      this.articleDate.setTime(this.articleDate.getTime() + this.articleDate.getTimezoneOffset() * 60 * 1000);
+    if (data.articledate) {
+      this.articledate = new Date(data.articledate);
+      this.articledate.setTime(this.articledate.getTime() + this.articledate.getTimezoneOffset() * 60 * 1000);
     }
 
     // Truncating contents

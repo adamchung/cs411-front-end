@@ -28,8 +28,14 @@ export class StockInfo {
             date: new Date(raw.date),
           };
 
+          // console.log('\n\n\nDate String: %s', raw.date);
+          // console.log('Uncorrected Date:');
+          // console.log(d.date);
+
           // Fixing time zone offset
           d.date.setTime(d.date.getTime() + d.date.getTimezoneOffset() * 60 * 1000);
+          // console.log('Corrected Date:');
+          // console.log(d.date);
 
           newData.push(d);
         }
