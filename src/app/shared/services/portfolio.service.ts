@@ -50,12 +50,15 @@ export class PortfolioService {
     );
   }
 
-  updatePortfolioDate(date: string) {
+  updatePortfolioDate(date: Date) {
     console.log('UpdateDate called');
     if (this.portfolioSubject.getValue() === null) { return; }
 
+    const dateString = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+    console.log(dateString);
+
     const id = this.authService.getId();
-    const url = `${environment.apiUrl}/portfolio/${id}?date=${date}`;
+    const url = `${environment.apiUrl}/portfolio/${id}?date=${dateString}`;
     console.log(url);
     this.http.get<Portfolio[]>(url).subscribe(
       (data) => {

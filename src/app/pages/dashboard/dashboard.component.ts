@@ -23,13 +23,32 @@ export class DashboardComponent implements OnInit {
 
   portfolioHeader = ['Name', 'Ticker', 'High', 'Low', 'Open', 'Close'];
 
+  // vals for calendar
+  today: Date;
+  maxDate: Date;
+  minDate: Date;
+
   constructor(
     private stockService: StockService,
     private authService: AuthService,
     private portfolioService: PortfolioService,
     private formBuilder: FormBuilder,
     private router: Router,
-    ) {}
+    ) {
+    this.today = new Date();
+    const maxDate = new Date(
+      this.today.getFullYear(),
+      this.today.getMonth(),
+      this.today.getHours() > 17 ? this.today.getDate() : this.today.getDate() - 1
+    );
+    const minDate = new Date(
+      this.today.getFullYear(),
+      this.today.getMonth(),
+      this.today.getDate() - 30
+    );
+    console.log(maxDate);
+    console.log(minDate);
+  }
 
   ngOnInit() {
     this.portfolioService.getPortfolio();
@@ -49,6 +68,27 @@ export class DashboardComponent implements OnInit {
     this.updateDateFormGroup = this.formBuilder.group({
       date: ['', Validators.required]
     });
+  }
+
+  dateFilter = (d: Date): boolean => {
+    if (d === null) {
+      return false;
+    }
+
+    const day = d.getDay();
+    // Prevent Saturday and Sunday from being selected.
+    if (day === 0 || day === 6) {
+      return false;
+    }
+
+    // if (d.getTime() > this.maxDate.getTime()) {
+    //   return false;
+    // }
+    // // if (d < this.minDate) {
+    // //   return false;
+    // // }
+
+    return true;
   }
 
 
@@ -81,7 +121,7 @@ export class DashboardComponent implements OnInit {
 
   updateDate() {
     const newDate = this.updateDateFormGroup.get('date').value;
-    console.log('New Date: %s', newDate);
+    console.log(newDate);
     this.portfolioService.updatePortfolioDate(newDate);
   }
 }
