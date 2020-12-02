@@ -70,18 +70,20 @@
               </div>
               <div class="card-body">
                 <div class="row">
-				  <ng-container *ngIf="tickers.length > 0; else noRelatedStocks">
-					  <ng-container *ngFor="let ticker of tickers">
-						<div class="col-md-2">
-						  <button class="btn btn-outline-primary" (click)="goToStock(ticker)">
-							{{ticker}}
-						  </button>
-						</div>
-					  </ng-container>
-				  </ng-container>
+                  <ng-container *ngIf="tickers.length > 0; else noRelatedStocks">
+                    <ng-container *ngFor="let ticker of tickers">
+                      <div class="col-md-2">
+                        <button class="btn btn-outline-primary" (click)="goToStock(ticker)">
+                          {{ticker}}
+                        </button>
+                      </div>
+                    </ng-container>
+                  </ng-container>
                   <ng-template #noRelatedStocks>
-					<h5>No related stocks found</h5>
-				  </ng-template>
+                    <div class="col">
+                      <p><em>No related stocks found</em></p>
+                    </div>
+                  </ng-template>
                 </div>
               </div>
             </div>
