@@ -5,6 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {StockService} from './stock.service';
 import {ArticleService} from './article.service';
+import {AuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,7 @@ export class PortfolioService {
 
   constructor(
     private http: HttpClient,
+    private authService: AuthService,
     private stockService: StockService,
     private articleService: ArticleService,
   ) {}
@@ -29,7 +31,8 @@ export class PortfolioService {
     // console.log('GetPortfolio Called');
     if (this.portfolioSubject.getValue() !== null) { return; }
 
-    const url = `${environment.apiUrl}/portfolio/test1`;
+    const id = this.authService.getId();
+    const url = `${environment.apiUrl}/portfolio/${id}`;
 
     // console.log('Request to %s', url);
     this.http.get<Portfolio[]>(url).subscribe(
@@ -84,7 +87,8 @@ export class PortfolioService {
   }
 
   addStock(ticker: string) {
-    const url = `${environment.apiUrl}/portfolio/test1/add?ticker=${ticker}`;
+    const id = this.authService.getId();
+    const url = `${environment.apiUrl}/portfolio/${id}/add?ticker=${ticker}`;
 
     this.http.get<Portfolio[]>(url).subscribe(
       (data) => {
@@ -96,7 +100,8 @@ export class PortfolioService {
   }
 
   removeStock(ticker: string) {
-    const url = `${environment.apiUrl}/portfolio/test1/delete?ticker=${ticker}`;
+    const id = this.authService.getId();
+    const url = `${environment.apiUrl}/portfolio/${id}/delete?ticker=${ticker}`;
 
     this.http.get<Portfolio[]>(url).subscribe(
       (data) => {

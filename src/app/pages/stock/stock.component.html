@@ -44,8 +44,8 @@
         <div class="col">
           <div class="card card-chart">
             <div class="card-header">
-              <h3 class="card-title">Graph</h3>
-              <p class="card-category">Historical prices</p>
+              <h3 class="card-title">Historical Prices</h3>
+<!--              <p class="card-category">Historical prices</p>-->
             </div>
             <div class="card-body">
               <app-chart></app-chart>
@@ -62,31 +62,84 @@
         </div>
       </div>
       <div class="row">
-        <ng-container *ngIf="getArticles() | async as articles; else loadingArticles">
-          <ng-container *ngFor="let a of articles">
-            <div class="col-lg-6">
-              <div class="card card-stats">
-                <div class="card-header">
-                  <a href="{{a.link}}">
-                    <h5 class="card-title">{{a.title}}</h5>
-                  </a>
-                  <p class="card-category">
-                    {{a.date | date: "fullDate"}}
-                    <br>
-                    Positivity: {{a.positivity}}
-                  </p>
-                </div>
-                <div class="card-body">
-                  <p>{{a.contents}}</p>
+        <ng-container *ngIf="this.articleService.bigArticle$ | async as articles; else loadingBigArticles">
+          <ng-container *ngIf="articles.length > 0; else noBigArticles">
+            <div class="col-md-12" align="center">
+              <h4>Big News</h4>
+            </div>
+            <ng-container *ngFor="let a of articles">
+              <div class="col-lg-6">
+                <div class="card card-stats">
+                  <div class="card-header">
+                    <a href="{{a.link}}">
+                      <h5 class="card-title">{{a.title}}</h5>
+                    </a>
+                    <p class="card-category">
+                      {{a.articleDate | date: "fullDate"}}
+                      <br>
+                      {{a.percentdiff}}% Change
+                      <br>
+                      Positivity: {{a.positivity}}
+                    </p>
+                  </div>
+                  <div class="card-body">
+                    <p>{{a.contents}}</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </ng-container>
           </ng-container>
+          <ng-template #noBigArticles>
+            <div class="col" align="center">
+              <br>
+              <h5>No Big News</h5>
+            </div>
+          </ng-template>
+        </ng-container>
+        <ng-template #loadingBigArticles>
+          <div class="col" align="center">
+            <br>
+            <h5>Loading Big News...</h5>
+          </div>
+        </ng-template>
+      </div>
+      <div class="row">
+        <ng-container *ngIf="this.articleService.article$ | async as articles; else loadingArticles">
+          <ng-container *ngIf="articles.length > 0; else noArticles">
+            <div class="col-md-12" align="center">
+              <h4>All News</h4>
+            </div>
+            <ng-container *ngFor="let a of articles">
+              <div class="col-lg-6">
+                <div class="card card-stats">
+                  <div class="card-header">
+                    <a href="{{a.link}}">
+                      <h5 class="card-title">{{a.title}}</h5>
+                    </a>
+                    <p class="card-category">
+                      {{a.date | date: "fullDate"}}
+                      <br>
+                      Positivity: {{a.positivity}}
+                    </p>
+                  </div>
+                  <div class="card-body">
+                    <p>{{a.contents}}</p>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+          <ng-template #noArticles>
+            <div class="col" align="center">
+              <br>
+              <h5>No News</h5>
+            </div>
+          </ng-template>
         </ng-container>
         <ng-template #loadingArticles>
           <div class="col" align="center">
             <br>
-            <h5>Loading Articles...</h5>
+            <h5>Loading News...</h5>
           </div>
         </ng-template>
       </div>

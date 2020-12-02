@@ -42,8 +42,10 @@
   <div class="col">
     <div class="card card-chart">
       <div class="card-header">
-        <h3 class="card-title">My Portfolio</h3>
-        <p class="card-category">Browse the stocks in your portfolio</p>
+        <ng-container *ngIf="authService.id$ | async as id">
+          <h3 class="card-title">{{id}}'s Portfolio</h3>
+          <p class="card-category">Browse the stocks in your portfolio</p>
+        </ng-container>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -87,6 +89,25 @@
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div class="card card-chart">
+      <div class="card-header">
+        <h3 class="card-title">Change Name</h3>
+        <p class="card-category">Update your username</p>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="updateNameFormGroup">
+          <mat-form-field appearance="fill">
+            <mat-label>New Name</mat-label>
+            <textarea matInput formControlName="newName"></textarea>
+          </mat-form-field>
+          <button class="btn btn-outline-primary" style="margin-left: 1em" (click)="rename()">Rename</button>
+        </form>
       </div>
     </div>
   </div>

@@ -3,6 +3,7 @@ import {StockService} from '../../shared/services/stock.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PortfolioService} from '../../shared/services/portfolio.service';
 import {Router} from '@angular/router';
+import {AuthService} from '../../shared/services/auth.service';
 
 
 @Component({
@@ -16,10 +17,13 @@ export class DashboardComponent implements OnInit {
   addStockFormGroup: FormGroup;
   deleteStockFormGroup: FormGroup;
 
+  updateNameFormGroup: FormGroup;
+
   portfolioHeader = ['Name', 'Ticker', 'High', 'Low', 'Open', 'Close'];
 
   constructor(
     private stockService: StockService,
+    private authService: AuthService,
     private portfolioService: PortfolioService,
     private formBuilder: FormBuilder,
     private router: Router,
@@ -34,6 +38,10 @@ export class DashboardComponent implements OnInit {
     });
     this.deleteStockFormGroup = this.formBuilder.group({
       tickerCtrl: ['', Validators.required]
+    });
+
+    this.updateNameFormGroup = this.formBuilder.group({
+      newName: ['', Validators.required]
     });
   }
 
@@ -58,5 +66,10 @@ export class DashboardComponent implements OnInit {
     const ticker = this.deleteStockFormGroup.get('tickerCtrl').value;
     console.log('Removing %s', ticker);
     this.portfolioService.removeStock(ticker);
+  }
+
+  rename() {
+    const newName = this.updateNameFormGroup.get('newName').value;
+    this.authService.renameUser(newName);
   }
 }

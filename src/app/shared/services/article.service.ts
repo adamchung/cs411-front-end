@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {NewsData} from '../models/news-data';
+import {BigNewsData, NewsData} from '../models/news-data';
 import {environment} from '../../../environments/environment';
 
 @Injectable({
@@ -12,6 +12,9 @@ export class ArticleService {
   private articleSubject = new BehaviorSubject<NewsData[]>(null);
   public article$: Observable<NewsData[]> = this.articleSubject.asObservable();
 
+  private bigArticleSubject = new BehaviorSubject<BigNewsData[]>(null);
+  public bigArticle$: Observable<BigNewsData[]> = this.bigArticleSubject.asObservable();
+
   constructor(
     private http: HttpClient,
   ) {}
@@ -21,6 +24,7 @@ export class ArticleService {
     if (!ticker) {
       // console.log('No current ticker!');
       this.articleSubject.next(null);
+      this.bigArticleSubject.next(null);
       return;
     }
 
@@ -33,15 +37,15 @@ export class ArticleService {
     }
 
     this.articleSubject.next(null);
+    this.bigArticleSubject.next(null);
 
     const url = `${environment.apiUrl}/articles/${ticker}?endDate=2020-11-29&startDate=2020-10-30`;
     console.log('Getting articles for %s', ticker);
     this.http.get<NewsData[]>(url).subscribe(
       (data) => {
-        console.log('Raw Data response');
+        console.log('Articles data');
         console.log(data);
-        if (data && data.length > 0) {
-
+        if (data) {
           const news: NewsData[] = [];
 
           for (const d of data) {
@@ -52,6 +56,27 @@ export class ArticleService {
           // console.log(this.articleSubject.getValue());
         } else {
           this.articleSubject.next(null);
+        }
+      }
+    );
+
+    const bigurl = `${environment.apiUrl}/articles/big/${ticker}`;
+    this.http.get<BigNewsData[]>(bigurl).subscribe(
+      (data) => {
+        console.log('Raw Data response');
+        console.log(data);
+        if (data) {
+
+          const news: BigNewsData[] = [];
+
+          for (const d of data) {
+            news.push(new BigNewsData(d));
+          }
+
+          this.bigArticleSubject.next(news);
+          // console.log(this.articleSubject.getValue());
+        } else {
+          this.bigArticleSubject.next(null);
         }
       }
     );

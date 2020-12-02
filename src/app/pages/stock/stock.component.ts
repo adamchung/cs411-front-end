@@ -54,9 +54,6 @@ export class StockComponent implements OnInit {
     return this.portfolioService.portfolio$;
   }
 
-  getArticles() {
-    return this.articleService.article$;
-  }
   makeChart() {
     // console.log('MakeChart Called!');
     const speedCanvas = document.getElementById('chart');

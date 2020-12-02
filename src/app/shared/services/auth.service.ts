@@ -7,6 +7,7 @@ import {Router} from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
 
   private idSubject = new BehaviorSubject<string>(null);
@@ -44,14 +45,31 @@ export class AuthService {
     );
   }
 
+  getId() {
+    return this.idSubject.getValue();
+  }
+
   logout() {
     this.idSubject.next(null);
     this.router.navigateByUrl('/login');
   }
 
   signup(id: string, pw: string) {
+    const url = `${environment.apiUrl}/account?username=${id}&password=${pw}`;
+  }
 
+  renameUser(newName: string) {
+    if (newName === null || newName === '') {
+      return;
+    }
 
+    const url = `${environment.apiUrl}/account/rename?oldName=${this.idSubject.getValue()}&newName=${newName}`;
+    this.http.get<string[]>(url).subscribe(
+      () => {
+        console.log('User renamed!');
+        this.idSubject.next(newName);
+      }
+    );
   }
 
 
