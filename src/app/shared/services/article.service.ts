@@ -39,7 +39,7 @@ export class ArticleService {
     this.articleSubject.next(null);
     this.bigArticleSubject.next(null);
 
-    const url = `${environment.apiUrl}/articles/${ticker}?endDate=2020-11-29&startDate=2020-12-01`;
+    const url = `${environment.apiUrl}/articles/${ticker}`;
     console.log('Getting articles for %s', ticker);
     this.http.get<NewsData[]>(url).subscribe(
       (data) => {
